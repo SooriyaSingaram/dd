@@ -1,0 +1,21 @@
+<aside class="main-sidebar super"> 
+    
+  <!-- sidebar: style can be found in sidebar.less -->
+  <section class="sidebar"> 
+    <!-- Sidebar Menu -->
+    <ul class="sidebar-menu accordianMenu menu">
+      <li class="accord" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"><a (click)="redirect('/super-admin')"><i class="fa fa-home" aria-hidden="true"></i> <span>Home </span></a></li> 
+      <li class="accord" *ngIf="orgMenu" routerLinkActive="active"><a  (click)="redirect('/organizationlist')"><i class="fa fa-align-left"></i><span> Organisations </span></a></li> 
+      <li class="accord " *ngIf="templateMenu" routerLinkActive="active"><a (click)="redirect('/template-list')"><i class="fa fa-themeisle" aria-hidden="true"></i> <span> Templates</span></a></li> 
+      <li class="accord " *ngIf="templateMenu" routerLinkActive="active"><a (click)="redirect('/email-template')"><i class="fa fa-themeisle" aria-hidden="true"></i> <span>Email Customization</span></a></li>  
+      <li class="accord " *ngIf="triggerMenu" routerLinkActive="active"><a  (click)="redirect('/trigger-list')"><i class="fa fa-cogs" aria-hidden="true"></i><span>Triggers  </span></a></li>
+      <li class="accord " *ngIf="userMenu" routerLinkActive="active"><a  (click)="redirect('/userlist')"><i class="fa fa-users" aria-hidden="true"></i><span>User Management  </span></a></li> 
+      <li class="accord " *ngIf="roleMenu" routerLinkActive="active"><a  (click)="redirect('/userrolelist')" ><i class="fa fa-user" aria-hidden="true"></i> <span>User Roles  </span></a></li> 
+      <li class="accord "  routerLinkActive="active"><a  (click)="redirect('/global-values')" ><i class="fa fa-user" aria-hidden="true"></i> <span>Global Values </span></a></li>       
+      <li class="accord" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"><a (click)="redirect('/activitylog')"><i class="fa fa-user" aria-hidden="true"></i> <span>User Activity </span></a></li> 
+
+   </ul>
+    <!-- /.sidebar-menu --> 
+  </section>
+  <!-- /.sidebar --> 
+</aside>

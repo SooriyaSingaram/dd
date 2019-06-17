@@ -1,0 +1,298 @@
+
+ .lft_sde, .rgt_side, .rgt_corner{display: table-cell;vertical-align: top;  float: none !important;height: 100%;}
+ 
+  .lft_sde{ width: 8%;} 
+  .rgt_side{width: 70%;background-color: #f4f7fa;} 
+  .rgt_corner{width: 22%;}
+ 
+ .import-header > h3 {
+    color: #fff;
+    font-family: ROBOTOBOLD;
+    font-size: 21px;
+    margin: 0;
+    padding: 21px 0 21px 25px;
+ }
+ .rgt_corner{padding:0px;}
+ 
+      .filter{
+        float: left;
+        width: 16%;
+        margin: 20px;
+      
+        color: white;
+        height: 50px;
+        border-radius: 8px;
+    }
+    
+ .rgt_corner{position: fixed; top:8%; width:24%;}
+ .rgt_side{   width: 100%!important;
+   background-color: #f4f7fa;
+   padding-left: 0;
+   margin-top: 0px;
+   float: right!important;
+   margin-bottom: 50px;
+   padding: 20px; } 
+ 
+    .template1 {
+     display: grid;
+     grid-template-columns: auto auto;
+     grid-template-rows: auto;
+     grid-template-areas: 
+       "a a"
+       "b c"
+       "d d";
+       align-items: stretch;
+        grid-column-gap: 20px;
+   grid-row-gap: 20px;
+ }
+
+//  canvas {
+//   width: 100%!important;
+//  }
+ .item1 {
+     grid-area: a;
+    
+   }
+   .item2 {
+     grid-area: b;
+   }
+   .item3 {
+     grid-area: c;
+   }
+   .item4 {
+     grid-area: d;
+   }
+   .template2 {
+     display: grid;
+     grid-template-columns: auto auto;
+     grid-template-rows: auto;
+     grid-template-areas: 
+       "a a"
+       "d d"
+       "b c";
+       align-items: stretch;
+       grid-column-gap: 20px;
+   grid-row-gap: 20px;
+ }
+ .template3 {
+     display: grid;
+     grid-template-columns: auto auto;
+     grid-template-rows: auto;
+     grid-template-areas: 
+       "b c"
+       "a a"
+       "d d";
+       align-items: stretch;
+       grid-column-gap: 20px;
+   grid-row-gap: 20px;
+   grid-auto-columns: fit-content(400px);
+   display: grid;
+   
+ }
+ .template4 {
+     display: grid;
+     grid-template-columns: auto auto;
+     grid-template-rows: auto;
+     grid-template-areas: 
+     "b c"
+     "a a"
+     "d d";
+       align-items: stretch;
+       grid-column-gap: 20px;
+   grid-row-gap: 20px;
+ }
+ .template5 {
+     display: grid;
+     grid-template-columns: auto auto;
+     grid-template-rows: auto;
+     grid-template-areas: 
+       "a a"
+       "d d"
+       "b c";
+       align-items: stretch;
+       grid-column-gap: 20px;
+   grid-row-gap: 20px;
+ }
+ 
+ 
+ .rt-menu ul li a{text-align:left;}
+ .sub_iconic_lst {
+   padding: 15px 8px !important;
+ }
+ 
+ .text1 h3 {
+   margin: 10px 0 17px 14px !important;
+   text-align: center;}
+   
+ 
+   @media only screen and (min-width: 768px) {
+     .rgt_side{display: table-cell;}
+     .item1 {
+       grid-area: a;
+      
+     }
+     .item2 {
+       grid-area: b;
+     }
+     .item3 {
+       grid-area: c;
+     }
+     .item4 {
+       grid-area: d;
+     }
+     .template3 {
+       grid-template-areas: 
+       "b c"
+       "a a"
+       "d d";
+         align-items: stretch;
+     }
+     .template1 {
+       grid-template-areas: 
+       "a a"
+       "b c"
+       "d d";
+            align-items: stretch;
+        }
+   
+   .template2 {
+     grid-template-areas: 
+     "a a"
+     "d d"
+     "b c";
+              align-items: stretch;
+          }
+          .template4 {
+           grid-template-areas: 
+           "b c"
+           "a a"
+           "d d";
+                align-items: stretch;
+            }
+            .template5 {
+             grid-template-areas: 
+             "a a"
+             "d d"
+             "c c"
+             "b b" ;
+                  align-items: stretch;
+              }
+     }
+     
+     @media only screen and (max-width: 768px) {
+       .filter {width: 80%;}
+       .rgt_corner{position: relative!important;}
+       .lft_sde, .rgt_side, .rgt_corner{display:list-item !important;}
+       .rgt_side{width:100% !important; margin-top:0px !important;}
+   }
+   
+   // .mat-form-field-infix{margin:7px !important;}
+   // .mat-select-trigger{border:1px solid #eee !important; line-height: 37px !important;}
+    .mat-form-field{position: relative;
+     -webkit-box-flex: 1;
+     -ms-flex: auto;
+     flex: auto;
+     min-width: 0;
+    margin-left:20px;
+     border: 1px solid #d2d6de;
+     padding: 0px 25px;
+     height: 44px; margin-bottom:20px;
+     border-radius: 8px;
+     background: #fff;}
+     .rgt_side h1{margin-bottom: 20px;}
+ 
+ 
+   .mat-form-field-infix{border-top:0px !important;}
+ 
+   //span.mat-option-text{top:5px;}
+   //.mat-pseudo-checkbox{margin-top:-10px;}
+ 
+ 
+ .mat-form-field-underline{background:none;}
+ 
+ .preloader{position: fixed;width: 100%;height: 100%;background: #fff;left: 0;right: 0;top: 0;bottom: 0;z-index: 9999;}
+ .preloader-img{position: relative;height: 100px;width:100px;margin: auto;top: 40%;}
+ .preloader-img img{position: absolute;left: 0;right: 0;top: 0;bottom: 0;max-width: 100%;max-height: 100%;margin: auto;}
+ .order{
+   float: right;
+   display: block;
+   cursor: pointer;
+ }
+ #down_load{
+   position: relative
+ }
+ .uparrow{
+   right: -8px
+ }
+ 
+ .no_data{
+   text-align: center;
+   font-weight: 600;
+ }
+ 
+ @media (min-width: 992px) and (max-width: 1199px)
+ {
+     .rgt_side {width: 76%!important;}
+ }
+ 
+ .datepicker{
+   border-radius: 8px !important;
+   height: 44px !important ;
+   width: 100% !important;
+   margin-left: 10px !important;
+ }
+ 
+ .engaged h6{
+   border-bottom: 1px solid #ccc;
+   line-height: 27px;
+   margin-top: 0px;
+   font-weight: bold;
+ }
+ 
+ .desc{
+   font-weight: 100;
+   font-size: 24px;
+ }
+ 
+ .form-controls {
+  display: inline !important; 
+   width: 66% !important; 
+   padding: 6px 12px;
+   font-size: 14px;
+   color: #000;
+   border: 1px solid #fff !important;
+   border-radius: 4px;
+ }
+ 
+ .head{
+   background-color: #f4f7fa !important;  
+   font-size: 26px;
+   font-weight: 600;  
+   color: #000;
+ }
+ 
+ .chart-head{
+   font-size: 20px !important;
+   font-weight: 600;
+   color: #000;
+   
+ }
+ 
+ .arrow{
+   margin-top: 20px
+ }
+ 
+ .tempdesc{
+   background-color: #f4f7fa !important;  
+   border:1px solid #f4f7fa !important;
+   color: #000;
+   margin-top: 8px !important;
+   
+   
+ }
+ 
+ .desclabel{
+   float: left;
+   line-height: 51px;
+   margin-right: 10px;  
+ }

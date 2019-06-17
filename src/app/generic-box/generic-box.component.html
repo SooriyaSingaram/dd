@@ -1,0 +1,52 @@
+<div class="genericBox boxmodal" *ngIf="showHide">
+    <!-- <div class="boxclose" (click)="close()">&times;</div> -->
+    <div innerHtml="{{genericBox.content}}" class="img-none"></div>
+    <div hidden innerHtml="{{genericBox.id}}"></div>
+    <div hidden innerHtml="{{genericBox.type}}" class="type-none"></div>
+
+    <!-- <div *ngIf="genericBox.id === 1">
+        <canvas baseChart height='300px' width='500px' [data]='pieChartData' [labels]='pieChartLabels' [chartType]='pieChartType'
+            [colors]="colorsPie" [legend]="pieChartLegend" (chartHover)='chartHovered($event)'></canvas>
+    </div> -->
+
+    <div *ngIf="genericBox.id === 2">
+        <canvas baseChart height='300px' width='500px' [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions"
+            [legend]="barChartLegend" [chartType]="barChartType" [colors]="barChartColor" (chartHover)="chartHovered($event)"
+            class="canvas-none"></canvas>
+    </div>
+
+    <div *ngIf="genericBox.id === 3">
+        <canvas baseChart height='300px' width='500px' [data]="doughnutChartData" [labels]="doughnutChartLabels" [legend]="doughnutChartLegend"
+            [chartType]="doughnutChartType" [colors]="doughnutChartColor" (chartHover)="chartHovered($event)"></canvas>
+    </div>
+
+    <div *ngIf="genericBox.id === 4">
+        <canvas baseChart height='300px' width='500px' class="canvas-none" [datasets]="lineareaChartData" [labels]="lineareaChartLabels"
+            [options]="lineareaChartOptions" [colors]="lineareaChartColors" [legend]="lineareaChartLegend" [chartType]="lineareaChartType"
+            (chartHover)="chartHovered($event)"></canvas>
+    </div>
+
+    <div *ngIf="genericBox.id === 5">
+        <canvas baseChart height='300px' width='500px' class="canvas-none" [datasets]="lineChartData" [labels]="lineChartLabels"
+            [options]="lineChartOptions" [colors]="lineChartColors" [legend]="lineChartLegend" [chartType]="lineChartType" (chartHover)="chartHovered($event)"></canvas>
+    </div>  
+    <div *ngIf="genericBox.id === 6">
+        <canvas baseChart height='300px' width='500px' class="canvas-none" [datasets]="stackChartData" [labels]="stackChartLabels"
+            [colors]="stackChartColor" [options]="stackChartOptions" [chartType]="stackChartType" (chartHover)="chartHovered($event)"></canvas>
+    </div>
+
+    <div *ngIf="genericBox.id === 7">
+        <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 paddinglef">
+            <div class="sub_iconic_lst violet_txt_clr red">
+                <a class="ico-block">
+                    <span>
+                        <img src="assets/images/user-images/3a.png" class="center-none" alt="">
+                    </span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+
+
+</div>

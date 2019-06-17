@@ -1,0 +1,142 @@
+<!-- Main Header -->
+<app-super-admin-header></app-super-admin-header>
+
+
+<app-super-admin-sidebar></app-super-admin-sidebar>
+
+<!-- Content Wrapper. Contains page content -->
+
+
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 head_title super_top_space">
+
+</div>
+<div class="super_admin_center">
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-9 col-lg-9">
+            <h2> User Management</h2>
+            <ul class="breadcrumb">
+                <li><a>Home</a></li>
+                <li><a>Users</a></li>
+            </ul>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 text-right">
+            <button type="button" class="btn btn-success" *ngIf="allowAddOrg" (click)="addUser()">Add Organization/IT Admin</button>
+        </div>
+    </div>
+    <div class="sectionuser">
+        <div class="sub_custom_table">
+            <!--column1-->
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <div class="table_list">
+                        <h2 class="table_head_section">List Of IT Admin</h2>
+                        <div class="table-responsive">
+                            <table class="table" id="example">
+                                <thead>
+                                    <tr>
+
+                                        <th>#</th>
+                                        <th>
+                                            Admin Name
+
+                                        </th>
+                                        <th>
+                                            Organisation
+
+                                        </th>
+                                        <th>
+                                            Role
+
+                                        </th>
+                                        <th>
+                                            Email Address
+
+                                        </th>
+
+                                      
+                                        <th class="text-center" *ngIf="showDelete || showEdit">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor=" let detail of message ; let i = index">
+                                        <!-- <td >{{i+1}}</td> -->
+
+                                        <td>{{detail.userId}}</td>
+
+                                        <td>{{detail.userName}}</td>
+                                        <td>{{detail.orgData[0].organizationName}}</td>
+                                        <td>{{detail.roleData[0].roleName}}</td>
+                                        <td>{{detail.emailId}}</td>
+
+                                        <td class="text-center">
+                                                <a class='btn btn-danger btn-xs' (click)="showPass(detail)" title="Reset Password"><i class="fa fa-refresh" aria-hidden="true"></i></a>
+                                                <a class='btn btn-success btn-xs' *ngIf="showEdit" (click)="onSelect(detail)">
+                                                        <i class="fa fa-pencil" aria-hidden="true"></i>
+                                                    </a> 
+                                            <a class="btn btn-danger btn-xs" *ngIf="showDelete" (click)="onDelete(detail)">
+                                                            <i class="fa fa-trash" aria-hidden="true"></i>
+                                                        </a>
+                                           
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <!--column1-->
+            </div>
+        </div>
+    </div>
+    <!-- /.content-wrapper -->
+</div>
+
+
+<app-super-admin-footer></app-super-admin-footer>
+
+
+<div class="default-popup-section" id="template" *ngIf="showHide">
+    <form method="post" #passwordForm="ngForm">
+        <div class="default-popup">
+            <div class="innerpadding">
+
+                <button type="button" class=" pull-right closebutton" aria-label="Close" (click)="closepopup()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="tablehead">Reset Password</h4>
+            </div>
+            <div class="contentpop">
+                <div class="form-group">
+                    <label>New Password
+                        <span style=color:red>*</span>
+                    </label>
+                    <input type="password" required class="form-control" #newpassword="ngModel" name="newpassword" [(ngModel)]="resetpassword.newPassword">
+                    <div [hidden]="newpassword.valid || newpassword.pristine" style="color:red">
+                        <div [hidden]="!newpassword.hasError('required')">password is required</div>
+
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <label>Confirm Password
+                        <span style=color:red>*</span>
+                    </label>
+                    <input type="password" required class="form-control" name="confirmpassword" #confirmpassword="ngModel" [pattern]="resetpassword.newPassword"
+                        [(ngModel)]="resetpassword.confirmNewPassword">
+                    <div [hidden]="confirmpassword.valid || confirmpassword.pristine" style="color:red">
+                        <div [hidden]="!confirmpassword.hasError('required')">Confirm Password is required</div>
+                    </div>
+                    <div *ngIf="confirmpassword.errors?.pattern" style="color:red">
+                        Password and Confirm password should be the same
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="popfooter">
+                <button type="submit" (click)="PasswordSubmit(resetpassword)" [disabled]="!passwordForm.form.valid" class="btn btn-primary">Reset Password</button>
+            </div>
+        </div>
+    </form>
+</div>

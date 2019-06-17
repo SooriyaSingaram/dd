@@ -1,0 +1,144 @@
+
+  <app-super-admin-header></app-super-admin-header>
+
+ 
+    <app-super-admin-sidebar></app-super-admin-sidebar>
+
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 head_title super_top_space">
+      
+    </div>
+      <div class="super_admin_center">
+        <div class="row">
+            <form action="" method="post" #testForm="ngForm">
+                
+          <div class="col-xs-12 col-sm-12 col-md-10 col-lg-10">
+            <h2> User Roles</h2>
+            <ul class="breadcrumb">
+              <li>
+                <a>Home</a>
+              </li>
+              <li>
+                <a> Roles</a>
+              </li>
+            </ul>
+          </div>
+
+          <!-- <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+              <div class="form-group">
+                <label>Role ID
+                  <span style=color:red>*</span>
+                </label>
+                <input type="text" required #roleid="ngModel" class="form-control" name="role_id" [(ngModel)]="role.roleId">
+  
+                <div [hidden]="roleid.valid || roleid.pristine" style="color:red">
+                  <p [hidden]="!roleid.hasError('required')">Role ID is required</p>
+                </div>
+              </div>
+            </div> -->
+
+          <div class="col-xs-12 col-sm-12 col-md-5 col-lg-5">
+              <div class="User_rolelist">
+            <div class="form-group">
+              <label>Role
+                <span style=color:red>*</span>
+              </label>
+              <input type="text" required #roles="ngModel" class="form-control" name="role_name" [(ngModel)]="role.roleName">
+
+              <div [hidden]="roles.valid || roles.pristine" style="color:red">
+                <p [hidden]="!roles.hasError('required')">Role Name is required</p>
+              </div>
+            </div>
+        
+         
+            <div class="form-group">
+              <label>Dashboard Type
+                <span style=color:red>*</span>
+              </label><br>
+              <input type="radio"   (click)="setProperty($event.target.checked)" name="modelProperty">Admin Dashboard<br>
+          <input type="radio"  (click)="setProperty(!$event.target.checked)"  name="modelProperty">User Dashboard
+
+            </div>
+            </div>
+          </div>
+          <div class="col-xs-12 col-sm-12 col-md-7 col-lg-7">
+              <div class="User_rolelist">
+              <div class="form-group">
+                  <label >Permissions <span style=color:red>*</span></label>
+                  <div *ngFor="let i of permissionList"><label style="padding-top:1px;margin-left:25px;">{{i}} </label> 
+                    <div style="float:right;margin:1px" *ngFor="let j of crudList" >
+                    <input type="checkbox"  (click)="setcreate($event.target.checked,j,i)" name="csvexport"> {{j}}
+                  
+                    </div>
+                  </div>
+                  <!-- <mat-form-field>
+                      <mat-select name="access" multiple [(ngModel)]="role.permission" >
+                        <mat-option *ngFor="let roles of roleAccess" [value]="roles">{{roles}}</mat-option>
+                      </mat-select>
+                    </mat-form-field> -->
+                  <!-- <angular2-multiselect required [data]="roleAccess" [(ngModel)]="role.permission" name="permissions" [settings]="dropdownSettings">
+
+                  </angular2-multiselect>                      -->
+                </div>
+              </div>
+          </div>
+
+         
+          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center margin_adduser">
+            <button type="submit"  *ngIf="!status" class="btn btn-success" [disabled]="!testForm.form.valid" (click)="addRole()">Add Role</button>
+            <button type="submit" *ngIf="status" class="btn btn-success" [disabled]="!testForm.form.valid" (click)="UpdateRole()">Update Role</button>
+          </div>
+          </form>
+        </div>
+        <div class="sectionuser">
+          <div class="sub_custom_table">
+            <!--column1-->
+            <div class="row">
+              <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="table_list">
+                  <h2 class="table_head_section">List Of User Role</h2>
+                  <div class="table-responsive">
+                    <table class="table" id="example" >
+                      <thead>
+                        <tr>
+                          <th>Role ID</th>
+                          <th>
+                            User Role
+                      
+
+                            <th class="text-center">Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let data of rolelist| paginate: { itemsPerPage: 10, currentPage: p }">
+
+                          <td>{{data.roleId}}</td>
+                          <td>{{data.roleName}}</td>
+  
+                          <td class="text-center">
+                            <a class="btn btn-danger btn-xs" *ngIf="showDelete" (click)="onDelete(data)">
+                              <i class="fa fa-trash" aria-hidden="true"></i>
+                            </a>
+                            <a class='btn btn-success btn-xs' *ngIf="showEdit" (click)="onSelect(data)">
+                              <i class="fa fa-pencil" aria-hidden="true"></i>
+                            </a>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+              <!--column1-->
+            </div>
+          </div>
+        </div>
+
+
+        <pagination-controls (pageChange)="p = $event"></pagination-controls>
+        
+      </div>
+   
+
+
+    <app-super-admin-footer></app-super-admin-footer>
+  

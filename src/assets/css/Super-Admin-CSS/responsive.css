@@ -1,0 +1,63 @@
+@media only screen and (min-width :320px) and (max-width :991px)
+{
+	.main-header .logo .logo-lg img{margin-top:0px !important;}
+	.main-header .sidebar-toggle{margin-left:0px !important;}
+	.sidebar-mini .content-section .main-sidebar, .left-side{width:230px;}
+	.growth_list_img img{min-height:auto;}
+	.main-header .logo{background:#fff;}
+	.logo span.logo-lg{font-size:22px;}
+
+	
+}
+@media only screen and (min-width :767px) and (max-width :979px){
+	.md_main_lst{width:95% !important;}
+	.sidebar-mini .content-section .main-sidebar, .left-side{width:230px;}
+}
+
+@media only screen and (min-width :1201px) and (max-width :1285px)
+{
+	.sub_custom_table table thead th{font-size:15px;}
+	.sub_custom_table table tbody td{font-size:14px;}
+	.growth_cont_pp > span{font-size:18px;}
+}
+
+@media only screen and (min-width :992px) and (max-width :1200px)
+{
+.iconic_lst > div { margin-bottom: 10px;width: 50%;}
+.growth_list > div { width: 100%;}
+.growth_list_img{margin-bottom:15px;}
+.sub_custom_table > div{width:100%; margin-bottom:15px;}
+}
+	
+
+
+@media screen and (max-width:979px) {
+.table-responsive {
+	width: 100%;
+	margin-bottom: 15px;
+	overflow-y: hidden;
+	-ms-overflow-style: -ms-autohiding-scrollbar;
+	border: 1px solid #ddd;
+}
+.details_list_sub{width:100%;}
+.content-wrapper, .right-side{width:100% !important;}
+
+.table-responsive>.table {
+	margin-bottom: 0
+}
+.table-responsive>.table>tbody>tr>td, .table-responsive>.table>tbody>tr>th, .table-responsive>.table>tfoot>tr>td, .table-responsive>.table>tfoot>tr>th, .table-responsive>.table>thead>tr>td, .table-responsive>.table>thead>tr>th {
+	white-space: nowrap
+}
+.table-responsive>.table-bordered {
+	border: 0
+}
+.table-responsive>.table-bordered>tbody>tr>td:first-child, .table-responsive>.table-bordered>tbody>tr>th:first-child, .table-responsive>.table-bordered>tfoot>tr>td:first-child, .table-responsive>.table-bordered>tfoot>tr>th:first-child, .table-responsive>.table-bordered>thead>tr>td:first-child, .table-responsive>.table-bordered>thead>tr>th:first-child {
+	border-left: 0
+}
+.table-responsive>.table-bordered>tbody>tr>td:last-child, .table-responsive>.table-bordered>tbody>tr>th:last-child, .table-responsive>.table-bordered>tfoot>tr>td:last-child, .table-responsive>.table-bordered>tfoot>tr>th:last-child, .table-responsive>.table-bordered>thead>tr>td:last-child, .table-responsive>.table-bordered>thead>tr>th:last-child {
+	border-right: 0
+}
+.table-responsive>.table-bordered>tbody>tr:last-child>td, .table-responsive>.table-bordered>tbody>tr:last-child>th, .table-responsive>.table-bordered>tfoot>tr:last-child>td, .table-responsive>.table-bordered>tfoot>tr:last-child>th {
+	border-bottom: 0
+}
+}

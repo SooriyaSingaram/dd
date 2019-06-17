@@ -1,0 +1,157 @@
+<app-super-admin-header></app-super-admin-header>
+<app-super-admin-sidebar></app-super-admin-sidebar>
+
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 head_title super_top_space">
+
+</div>
+<div class="super_admin_center">
+  <div class="row">
+    <form action="" method="post" #testForm="ngForm">
+
+      <div class="col-xs-12 col-sm-12 col-md-10 col-lg-10">
+        <h2> Global Values</h2>
+        <ul class="breadcrumb">
+          <li>
+            <a>Home</a>
+          </li>
+          <li>
+            <a> Global Values</a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="add_user">
+        <div class="User_rolelist">
+          <div class="col-xs-12 col-sm-12 col-md-4 col-lg-3">
+
+            <!-- <div class="form-group">
+              <label>Company Name
+                <span style=color:red>*</span>
+              </label>
+              <input type="text" required #company="ngModel" class="form-control" name="company" [(ngModel)]="values.companyName">
+
+              <div [hidden]="company.valid || company.pristine" style="color:red">
+                <p [hidden]="!company.hasError('required')">Company Name is required</p>
+              </div>
+            </div> -->
+            <div class="form-group">
+              <label >Company Name {{values.companyName}}<span style=color:red>*</span></label>
+              <select required class="form-control" #PartnerName1="ngModel" name="PartnerName1" [(ngModel)]="values.companyName">
+                 
+                  <option [ngValue]="SelectRole">Select a Partner Name</option>
+                  <option *ngFor="let partnername of PartnerName | orderBy : 'PartnerName'" [(ngValue)]="partnername.PartnerName">{{partnername.PartnerName}}</option>
+              </select>
+              <div [hidden]="PartnerName1.valid || PartnerName1.pristine" style="color:red">
+                  <p [hidden]="!PartnerName1.hasError('required')">Company Name is required</p>
+              </div>
+          </div>
+          </div>
+          <div class="col-xs-12 col-sm-12 col-md-4 col-lg-3">
+
+            <div class="form-group">
+              <label>Total Quantity<span style=color:red>*</span>
+              </label>
+              <input type="text" required #qty="ngModel" class="form-control" name="qty" [(ngModel)]="values.Quantity" pattern="[0-9]*">
+
+              <div [hidden]="qty.valid || qty.pristine" style="color:red">
+                <p [hidden]="!qty.hasError('required')">Quantity is required</p>
+                <p [hidden]="!qty.hasError('pattern')">Quantity should be only numbers</p>                
+                
+              </div>
+            </div>
+          </div>
+          <div class="col-xs-12 col-sm-12 col-md-4 col-lg-3">
+
+            <div class="form-group">
+              <label>Total Weight
+
+                <span style=color:red>*</span>
+              </label>
+              <input type="text" required #ctlwt="ngModel" class="form-control" name="ctlwt" [(ngModel)]="values.Weight" pattern="[0-9]*">
+
+              <div [hidden]="ctlwt.valid || ctlwt.pristine" style="color:red">
+                <p [hidden]="!ctlwt.hasError('required')">Weight is required</p>
+                <p [hidden]="!ctlwt.hasError('pattern')">Weight should be only numbers</p>                
+              </div>
+            </div>
+          </div>
+          <div class="col-xs-12 col-sm-12 col-md-4 col-lg-3">
+
+            <div class="form-group">
+              <label>Finacial Year
+                <span style=color:red>*</span>
+              </label>
+              <input type="text" required #year="ngModel" class="form-control" name="year" [(ngModel)]="values.financialYear" pattern="[0-9]*" minlength="4"  maxlength="5" min="2015" max="3000">
+
+              <div [hidden]="year.valid || year.pristine" style="color:red">
+                <p [hidden]="!year.hasError('required')">Finacial Year is required</p>
+                <p [hidden]="!year.hasError('pattern')">Finacial should be year</p>                
+                
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center margin_adduser">
+          <button type="submit" *ngIf="!status" class="btn btn-success" [disabled]="!testForm.form.valid" (click)="AddData()">Save</button>
+          <button type="submit" *ngIf="status" class="btn btn-success" [disabled]="!testForm.form.valid" (click)="UpdateData()">Update </button>
+        </div>
+      </div>
+
+    </form>
+  </div>
+
+  <div class="sectionuser">
+    <div class="sub_custom_table">
+      <!--column1-->
+      <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+          <div class="table_list">
+            <h2 class="table_head_section">List of Global Values</h2>
+            <div class="table-responsive">
+              <table class="table" id="example" >
+                <thead>
+                  <tr>
+                    <th>Company Name</th>
+                      <th>Quantity</th>
+                      <th>Weight</th>
+                      <th>Financial Year</th>
+                      <th class="text-center">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let data of list| paginate: { itemsPerPage: 10, currentPage: p }">
+
+                    <td>{{data.companyName}}</td>
+                    <td>{{data.Quantity}}</td>
+
+                    <td>{{data.Weight}}</td>
+
+                    <td>{{data.financialYear}}</td>
+
+                    <td class="text-center">
+                      <!-- <a class="btn btn-danger btn-xs"  (click)="deleteData(data._id)">
+                        <i class="fa fa-trash" aria-hidden="true"></i>
+                      </a> -->
+                      <a class='btn btn-success btn-xs' (click)="editData(data._id)">
+                        <i class="fa fa-pencil" aria-hidden="true"></i>
+                      </a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <!--column1-->
+      </div>
+    </div>
+  </div>
+
+
+  <pagination-controls (pageChange)="p = $event"></pagination-controls>
+
+
+</div>
+
+<app-super-admin-footer></app-super-admin-footer>

@@ -1,0 +1,19 @@
+.main-header .navbar{background-color:#fff;}
+.main-header{background-color: #f7f7f9;}
+.main-header .logo{background-color: #f7f7f9;}
+.main-header .sidebar-toggle{color:#505050;}
+.main-header span label {
+    color: #f15b26;
+}
+
+.sidebar-menu > li > a {
+    color: #616161;
+    font-size: 18px;
+    font-family: 'ProximaNova-Bold';
+}
+.navbar-nav > li i {
+    color: #5d5b5c;
+    font-size: 21px;
+}.main-header .logo .logo-lg{color:#000;}
+
+

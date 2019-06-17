@@ -1,0 +1,180 @@
+<app-super-admin-header></app-super-admin-header>
+<app-super-admin-sidebar></app-super-admin-sidebar>
+
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 head_title super_top_space"> </div>
+
+<div class="super_admin_center">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <h2 style="margin:0;"> Trigger</h2>
+        <ul class="breadcrumb">
+            <li>
+                <a [routerLink]="['/super-admin']">Home</a>
+            </li>
+            <li>
+                <a>Trigger</a>
+            </li>
+
+        </ul>
+    </div>
+    <div class="add_user">
+
+        <div class="row">
+            <form action="" #triggerForm="ngForm">
+
+                <!-- <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                    <div class="form-group">
+                        <label>Condition Name<span style=color:red>*</span></label>
+                        <select class="form-control" required #conditionName="ngModel" name="conditionName" [(ngModel)]="message.ConditionName" (ngModelChange)="selectFields(message.ConditionName)">
+                    <option [ngValue]="SelectRole">Select a conditionName</option>
+                  <option *ngFor="let role of table  | orderBy:'name'"   [(ngValue)]="role.name">{{role.name}}</option>
+              </select>
+              <div [hidden]="conditionName.valid || conditionName.pristine" style="color:red">
+                <p [hidden]="!conditionName.hasError('required')">Condition Name is required</p>
+            </div>
+                    </div>
+                </div> -->
+
+
+                <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4" [hidden]="status">
+                    <div class="form-group">
+                        <label>Time Period
+                            <span style=color:red>*</span>
+                        </label>
+                        <select required #Period="ngModel" class="form-control" name="Period" [(ngModel)]="message.Period">
+                            <option [ngValue]="Select">Select Period</option>
+                            <option *ngFor="let data of period">{{data}}</option>
+
+                        </select>
+                        <div [hidden]="Period.valid || Period.pristine" style="color:red">
+                            <p [hidden]="!Period.hasError('required')">Period is required</p>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4" [hidden]="organizationShow">
+                    <div class="form-group">
+                        <label>Organization
+                            <span style=color:red>*</span>
+                        </label>
+                        <select class="form-control" required #Organizationid="ngModel" name="Organizationid" [(ngModel)]="message.OrganizationId"
+                            (ngModelChange)=loadUsers(message.OrganizationId)>
+                            <option [ngValue]="SelectRole">Select an Organization</option>
+                            <option *ngFor="let organization of organization_list | orderBy : 'organizationName'" [(ngValue)]="organization._id">{{organization.organizationName}}</option>
+                        </select>
+                        <div [hidden]="Organizationid.valid || Organizationid.pristine" style="color:red">
+                            <p [hidden]="!Organizationid.hasError('required')">Organization is required</p>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                    <div class="form-group">
+                        <label>Users List
+                            <span style=color:red>*</span>
+                        </label>
+                        <angular2-multiselect [data]="users" required [(ngModel)]="message.UsersList" name="selectedItems" [settings]="dropdownSettings"
+                            (onSelect)="onItemSelect($event)" (onDeSelect)="OnItemDeSelect($event)" (onSelectAll)="onSelectAll($event)"
+                            (onDeSelectAll)="onDeSelectAll($event)">
+                        </angular2-multiselect>
+
+                    </div>
+                </div>
+
+
+                <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                    <div class="form-group">
+                        <label>Template
+                            <span style=color:red>*</span>
+                        </label>
+
+                        <select #Template="ngModel" required class="form-control" name="Template" [(ngModel)]="message.Template">
+                            <option [ngValue]="SelectRole">Select Template</option>
+                            <option *ngFor="let template of template_list | orderBy : 'templateName'">{{template.templateName}}</option>
+                        </select>
+                        <div [hidden]="Template.valid || Template.pristine" style="color:red">
+                            <p [hidden]="!Template.hasError('required')">Template is required</p>
+                        </div>
+                    </div>
+                </div>
+
+
+            </form>
+        </div>
+        <hr>
+        <div class="row">
+            <form [formGroup]="invoiceForm">
+                <div formArrayName="itemRows">
+                    <div *ngFor="let itemrow of invoiceForm.controls.itemRows.controls; let i=index" [formGroupName]="i">
+
+
+                        <div class="triggerSet">
+                            <select *ngIf="i != 0" class="form-control" formControlName="FormArithmeticName" name="arithmeticName">
+                                <option value="">Select Condition</option>
+                                <option>AND</option>
+                                <option> OR</option>
+                            </select>
+                        </div>
+
+                        <div class="col-sm-11 Condition_heading" style="padding:0;width:98%;float:right">
+                            <div class="add_box condition_label">
+                                <div class="form-group">
+                                    <label *ngIf="i == 0">Conditions</label>
+                                    <h4 style="margin-bottom:0;">Condition #{{ i + 1 }}</h4>
+                                </div>
+                            </div>
+                            <div class="add_box">
+                                <div class="form-group">
+                                    <label *ngIf="i == 0">Property Name</label>
+                                    <select class="form-control" formControlName="FormPropertyName" name="propertyName">
+                                        <option value="">Select a propertyName</option>
+                                        <option *ngFor="let tfields of field | orderBy ">{{tfields}}</option>
+                                    </select>
+
+
+
+                                </div>
+                            </div>
+                            <div class="add_box">
+                                <div class="form-group">
+                                    <label *ngIf="i == 0">Comparision Operator</label>
+                                    <select class="form-control" formControlName="FormComparisonOperator" name="comparisonOperator">
+                                        <option [ngValue]="SelectRole">Select a Comparison Operator</option>
+                                        <option *ngFor="let coperator of comparison_operator">{{coperator}}</option>
+                                    </select>
+                                </div>
+                            </div>
+
+
+                            <div class="add_box">
+                                <div class="form-group">
+                                    <label *ngIf="i == 0">Condition Value</label>
+                                    <input type="text" class="form-control" formControlName="FormConditionValue" id="password" name="ConditionValue">
+                                </div>
+                            </div>
+                            <div class="add_button">
+                                <button *ngIf="i != 0" (click)="deleteRow(i)" class="btn btn-danger">-</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-11 col-lg-11 text-right">
+                    <div class="add_button1" style="height:auto;margin-top:0;">
+                        <button type="button" (click)="addNewRow()" class="btn btn-primary add_row">+</button>
+                    </div>
+                </div>
+
+            </form>
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center above">
+                <div class="form-group" style="height:auto;">
+                    <button type="submit" *ngIf="state" (click)="updateTrigger()" class="btn btn-success">Update Trigger</button>
+                    <button type="submit" *ngIf="!state" (click)="setTrigger()" [disabled]="!triggerForm.form.valid" class="btn btn-success">Set Trigger</button>
+                    <button type="submit" (click)="goToTriggerList();" class="btn btn-danger">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<app-super-admin-footer></app-super-admin-footer>

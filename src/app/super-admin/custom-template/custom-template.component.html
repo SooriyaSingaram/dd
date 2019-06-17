@@ -1,0 +1,238 @@
+<div class="preloader" *ngIf="showloader">
+  <div class="preloader-img">
+    <img src="../assets/images/preloader.gif">
+  </div>
+</div>
+
+<app-super-admin-header></app-super-admin-header>
+
+<app-super-admin-sidebar></app-super-admin-sidebar>
+<div class="content-wrapper">
+
+  <!-- <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 head_title">
+    </div> -->
+  <div id="wrapper">
+    <div class="rgt_corner col-md-2">
+
+      <div class="col-xs-12 no-padding">
+        <!-- <div class="col-xs-12 no-padding right-side-heading">
+            <h2>Visualizations</h2>
+  
+          </div> -->
+        <div class="col-xs-12 no-padding visualizations-charts">
+          <h2 class="chart_head">Customize</h2>
+          <div class="radio_butttons">
+           <h4 class="axis">PDF Customization</h4> 
+            <!-- <div class="from_radio_cnt">
+              <input type="checkbox" [checked]="customizePDF" [(ngModel)]="customizePDF" (click)="pdfCustomize($event.target.checked)"
+                name="pdfcustom">
+              <span>PDF Customization</span>
+            </div> -->
+            <!-- <div class="from_radio_cnt">
+              <input type="checkbox" [checked]="customizeEmail" [(ngModel)]="customizeEmail" (click)="emailCustomize($event.target.checked)"
+                name="emailcustom">
+              <span>Email Customization </span>
+            </div> -->
+
+          </div>
+        </div>
+
+        <div class="charts_fields" *ngIf="showForm">
+          <form method="post" #chartForm="ngForm" >
+
+            <h4 class="chart_head">Chart Details</h4>
+            <div class="form-group heading-data">
+              <label>Heading
+                <span style=color:red>*</span>
+              </label>
+              <input type="text" required class="form-control" name="chartname" #chartname="ngModel" [(ngModel)]="heading">
+            </div>
+            <div [hidden]="chartname.valid || chartname.pristine" style="color:red">
+              <p [hidden]="!chartname.hasError('required')">Heading is required</p>
+            </div>
+           
+            <h4 class="chart_head">Chart Description</h4>
+
+            <textarea #chartdesc="ngModel" class="form-control" name="chartdesc" [(ngModel)]="graphdesc"></textarea>
+            <div>
+              <input type="hidden" value="" [(ngModel)]="position" name="position">
+            </div>
+            <div>
+              <input type="hidden" value="" [(ngModel)]="ctype" name="ctype">
+            </div>
+
+            <div class="col-sm-12">
+              <button type="submit" class="btn btn-success" [disabled]="!chartForm.form.valid" (click)="updateWidget()">Update Widget</button>
+            </div>
+
+          </form>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="rgt_side col-md-10">
+      <div class="col-xs-12 col-sm-12 col-md-10 col-lg-10">
+        <h2>Customize Template </h2>
+        <ul class="breadcrumb">
+          <li>
+            <a>Home</a>
+          </li>
+          <li>
+            <a>Template</a>
+          </li>
+          <li>
+            <a>Customize Template</a>
+          </li>
+        </ul>
+      </div>
+
+      <form action="" method="post" #testForm="ngForm">
+
+        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-12" *ngIf="pdfItem">
+          <div class="form-group">
+            <label>Customize Template Name
+              <span style=color:red>*</span>
+            </label>
+            <input type="text" required #templatename="ngModel" class="form-control" id="templatename" name="template_name" [(ngModel)]="template.customeTemplateName">
+            <div [hidden]="templatename.valid || templatename.pristine" style="color:red">
+              <p [hidden]="!templatename.hasError('required')">Template Name is required</p>
+
+            </div>
+          </div>
+
+        </div>
+
+        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-12"  *ngIf="pdfItem">
+
+          <div class="form-group">
+            <label>Customize Page Heading
+              <span style=color:red>*</span>
+            </label>
+            <input type="text" required #pagename="ngModel" class="form-control" name="page_name" [(ngModel)]="template.customDashboardName">
+            <div [hidden]="pagename.valid || pagename.pristine" style="color:red">
+              <p [hidden]="!pagename.hasError('required')">Heading is required</p>
+
+            </div>
+          </div>
+
+        </div>
+
+        <div class="col-xs-12 col-sm-12 col-md-8 col-lg-12"  *ngIf="pdfItem">
+          <div class="form-group">
+            <label>Customize Template Description</label>
+            <textarea #templatedec="ngModel" class="form-control areatext" id="template_desc" name="templatedesc" [(ngModel)]="template.customTemplateDesc "></textarea>
+          </div>
+
+        </div>
+        <div  *ngIf="email">
+
+        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-12">
+
+          <div class="form-group">
+            <label>Email Subject
+            </label>
+            <input type="text" #subject="ngModel" class="form-control" name="subject" [(ngModel)]="emailSubject">
+
+          </div>
+        </div>
+
+        <div class="col-xs-12 col-sm-12 col-md-8 col-lg-12">
+
+          <div class="form-group">
+            <label>Email Body
+            </label>
+            <textarea #emailbody="ngModel" class="form-control areatext" name="emailbody" [(ngModel)]="emailBody"></textarea>
+
+          </div>
+        </div>
+        </div>
+
+      </form>
+      <br>
+      <div class="col-sm-12" style="margin-top:20px;margin-bottom:20px;">
+        <div class={{template.templateType}}>
+          <ng-container *ngFor="let charts of WidgetCount">
+
+            <div class="item1" *ngIf="droparea1">
+              <div class="engaged">
+                <h4>drop Here</h4>
+                <div dropDirective (dropEvent)="addDropItem('item1','drop1',$event);" class="droppable" [dropHighlight]="'highlight'">
+                  <app-generic-box *ngFor="let item of itemsDropped1; let i=index" [genericBox]='item' class="dropItem"></app-generic-box>
+                </div>
+              </div>
+            </div>
+            <div class="item2" *ngIf="droparea2">
+              <div class="engaged">
+                <h4>drop Here</h4>
+                <div dropDirective (dropEvent)="addDropItem('item2','drop2',$event);" class="droppable" [dropHighlight]="'highlight'">
+                  <app-generic-box *ngFor="let item of itemsDropped2; let i=index" [genericBox]='item' class="dropItem"></app-generic-box>
+                </div>
+              </div>
+            </div>
+            <div class="item3" *ngIf="droparea3">
+              <div class="engaged">
+                <h4>drop Here</h4>
+                <div dropDirective (dropEvent)="addDropItem('item3','drop3',$event);" class="droppable" [dropHighlight]="'highlight'">
+                  <app-generic-box *ngFor="let item of itemsDropped3; let i=index" [genericBox]='item' class="dropItem"></app-generic-box>
+                </div>
+              </div>
+            </div>
+            <div class="item4" *ngIf="droparea4">
+              <div class="engaged">
+                <h4>drop Here</h4>
+                <div dropDirective (dropEvent)="addDropItem('item4','drop4',$event);" class="droppable" [dropHighlight]="'highlight'">
+                  <app-generic-box *ngFor="let item of itemsDropped4; let i=index" [genericBox]='item' class="dropItem"></app-generic-box>
+                </div>
+              </div>
+            </div>
+            <div class={{charts.row}}>
+
+              <div class="close_btn" id={{charts.row}}1>
+                <button class="pencil" (click)="close(charts.row)">close </button>
+                <button class="edit" (click)="editChart(charts.row)">
+                  <i class="fa fa-pencil" aria-hidden="true"></i>&nbsp;edit</button>
+              </div>
+              <div *ngIf="charts.chartType == 'Line area Chart'" class="engaged" id={{charts.row}}>
+                <h4>{{charts.chartHeading}}</h4>
+                <canvas baseChart height='350px' width='1200px' [datasets]="lineareaChartData" [labels]="lineareaChartLabels" [options]="lineareaChartOptions"
+                  [colors]="lineareaChartColors" [legend]="lineareaChartLegend" [chartType]="'line'"></canvas>
+              </div>
+              <div *ngIf="charts.chartType == 'Line Chart'" class="engaged" id={{charts.row}}>
+                <h4>{{charts.chartHeading}}</h4>
+                <canvas baseChart height='350px' width='1200px' [datasets]="lineChartData" [labels]="lineChartLabels" [options]="lineChartOptions"
+                  [colors]="lineChartColors" [legend]="lineChartLegend" [chartType]="'line'"></canvas>
+              </div>
+              <div *ngIf="charts.chartType == 'Pie Chart'" class="engaged" id={{charts.row}}>
+                <h4>{{charts.chartHeading}}</h4>
+                <canvas baseChart height='350px' width='1200px' [data]="pieChartData" [labels]="pieChartLabels" [legend]="pieChartLegend"
+                  [chartType]="'pie'" [colors]="colorsPie"></canvas>
+              </div>
+              <div *ngIf="charts.chartType == 'Bar Chart'" class="engaged" id={{charts.row}}>
+                <h4>{{charts.chartHeading}}</h4>
+                <canvas baseChart height='350px' width='1200px' [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions"
+                  [legend]="barChartLegend" [chartType]="'bar'" [colors]="barChartColor" class="canvas-none"></canvas>
+              </div>
+              <div *ngIf="charts.chartType == 'Stacked Chart'" class="engaged" id={{charts.row}}>
+                <h4>{{charts.chartHeading}}</h4>
+                <canvas baseChart height='350px' width='1200px' [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions"
+                  [legend]="barChartLegend" [chartType]="'bar'" [colors]="barChartColor" class="canvas-none"></canvas>
+              </div>
+              <div *ngIf="charts.chartType == 'Stacked Line Chart'" class="engaged" id={{charts.row}}>
+                <h4>{{charts.chartHeading}}</h4>
+                <canvas baseChart height='350px' width='1200px' [datasets]="lineareaChartData" [labels]="lineareaChartLabels" [options]="lineareaChartOptions"
+                  [colors]="lineareaChartColors" [legend]="lineareaChartLegend" [chartType]="'line'"></canvas>
+              </div>
+            </div>
+          </ng-container>
+
+        </div>
+        <div class="col-sm-12">
+          <button type="submit" class="btn btn-success" [disabled]="!testForm.form.valid" (click)="updateTemplate()">Update Template</button>
+        </div>
+      </div>
+
+    </div>
+
+    <app-super-admin-footer></app-super-admin-footer>
+  </div>

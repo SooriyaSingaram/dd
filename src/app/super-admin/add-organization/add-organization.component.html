@@ -1,0 +1,163 @@
+<div class="preloader" *ngIf="showloader">
+  <div class="preloader-img">
+<img src="../assets/images/preloader.gif">
+    </div>
+</div>
+
+
+
+<!-- Main Header -->
+<app-super-admin-header></app-super-admin-header>
+
+
+  <!-- Left side column. contains the logo and sidebar -->
+  <app-super-admin-sidebar></app-super-admin-sidebar>
+  <!-- Content Wrapper. Contains page content -->
+ 
+    <!-- Content Header (Page header) -->
+
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 head_title super_top_space">
+
+    </div>
+    <div class="super_admin_center">
+
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <h2> Organisation</h2>
+        <ul class="breadcrumb">
+          <li>
+            <a>Home</a>
+          </li>
+          <li>
+            <a>Add Organisation</a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="add_user">
+        <div class="row">
+          <form action="" method="post" #testForm="ngForm">
+            <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+              <div class="form-group">
+                <label>Organisation Name
+                  <span style=color:red>*</span>
+                </label>
+                <input required type="text" #organizationname="ngModel" class="form-control" id="organizationname" name="organizationname"
+                  [(ngModel)]="organization.organizationName">
+                <div [hidden]="organizationname.valid || organizationname.pristine" style="color:red">
+                  <p [hidden]="!organizationname.hasError('required')">Name is required</p>
+                </div>
+              </div>
+
+            </div>             
+            <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4" >
+              <div class="form-group">
+                  <label >Partner Name<span style=color:red>*</span></label>
+                  <select required class="form-control" #PartnerName1="ngModel" name="PartnerName1" [(ngModel)]="organization.PartnerName">
+                     
+                      <option [ngValue]="SelectRole">Select a Partner Name</option>
+                      <option *ngFor="let partnername of PartnerName | orderBy : 'PartnerName'" [(ngValue)]="partnername.PartnerName">{{partnername.PartnerName}}</option>
+                  </select>
+                  <div [hidden]="PartnerName1.valid || PartnerName1.pristine" style="color:red">
+                      <p [hidden]="!PartnerName1.hasError('required')">PartnerName is required</p>
+                  </div>
+              </div>
+          </div>
+            <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+              <div class="form-group">
+                <label>Themes<span style=color:red>*</span></label>
+                <angular2-multiselect [data]="Themes" [(ngModel)]="organization.theme" name="themes" required
+                [settings]="dropdownSettings" ></angular2-multiselect>              
+         
+                
+              </div>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                <div class="form-group">
+                  <label>Template<span style=color:red>*</span></label>
+                  <angular2-multiselect [data]="TemplatesList" [(ngModel)]="organization.templates" name="template" required
+                  [settings]="TemplatesSettings" ></angular2-multiselect>         
+                           
+                </div>
+              </div>
+            <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+              <div class="form-group">
+                <label>Phone                  
+                </label>
+                <input type="text"  class="form-control" #mobile="ngModel" name="mobile" [(ngModel)]="organization.mobile"
+                pattern="[0-9]*" minlength="10"  maxlength="15">
+
+              </div>
+              <div [hidden]="mobile.valid || mobile.pristine" style="color:red">
+                <div [hidden]="!mobile.hasError('minlength')">Phone Number should be Min 10 digit</div>
+                <div [hidden]="!mobile.hasError('pattern')">Phone Number should be only numbers</div>
+            </div>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+              <div class="form-group">
+                <label>Address</label>
+                <input type="text" class="form-control"  name="address" [(ngModel)]="organization.address">
+              </div>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+              <div class="form-group">
+                <label >Suburb</label>
+                <input type="text" class="form-control"  name="suburb" [(ngModel)]="organization.suburb">
+              </div>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+              <div class="form-group">
+                <label >State</label>
+                <input type="text" class="form-control"  name="state" [(ngModel)]="organization.state">
+              </div>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+              <div class="form-group">
+                <label >Post code</label>
+                <input type="text" class="form-control" #postCode=ngModel  name="postCode" [(ngModel)]="organization.postCode"   pattern="[0-9]*"
+                minlength="6"
+                maxlength="6">
+              </div>
+              <div [hidden]="postCode.valid || postCode.pristine" style="color:red">
+                <div [hidden]="!postCode.hasError('minlength')">Post Code should be Min 6 digit</div>
+                <div [hidden]="!postCode.hasError('pattern')">Post Code number should be only numbers</div>
+            </div>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+              <div class="form-group">
+                <label >Country</label> 
+                <select class="form-control"  name="country" [(ngModel)]="organization.country"><option value="">Select Country</option><option  *ngFor="let countryName of countryList">{{countryName.name}}</option></select>
+              </div>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+              <div class="form-group">
+              
+                <label >Upload Logo</label> 
+                <input type="file" class="form-control"  #input name="logo" (change)="getImage($event)" style="float:left;">
+              </div>
+            </div>    
+            <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4" *ngIf="organization.logo">
+                <div class="form-group">
+                  <div class="col-xs-12" style="padding:0;">
+                    <div class="uploading-img">
+                        <img src="http://35.170.221.105:4000/uploads/{{organization.logo}}"/>
+                    </div>
+                      <!-- <label style="width:100%;float:left;"></label> -->
+                  </div>
+                
+                </div>
+              </div>        
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center above">
+              <div class="form-group">
+                <button type="submit" *ngIf="!status" (click)="addOrganization()" class="btn btn-success" [disabled]="!testForm.form.valid">Add Organization</button>
+                <button type="submit" *ngIf="status" (click)="editOrganization();" class="btn btn-success" [disabled]="!testForm.form.valid">Update</button>
+                <button type="submit" (click)="resetForm()" class="btn btn-success">Reset</button>
+                <button type="submit" (click)="goToOrg();" class="btn btn-danger">Cancel</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>      
+      <!-- /.content-wrapper -->
+    </div>
+  
+  <app-super-admin-footer></app-super-admin-footer>

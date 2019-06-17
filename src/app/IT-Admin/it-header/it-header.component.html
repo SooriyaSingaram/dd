@@ -1,0 +1,44 @@
+<!-- Main Header -->
+<header class="it_admin_top">
+  <!-- Logo -->
+  <div class="it_left">
+  <a >
+    <div class="logo-lg"><span><i class="fa fa-reorder"></i></span> <span class="desktop">Dynamic</span> Dashboard</div></a></div>
+ 
+  <!-- Header Navbar -->
+  <div class="it_right">  
+  <div class="navbar-custom-menu" role="navigation">
+   
+   
+      <ul class="nav navbar-nav">
+        <li class="dropdown notifications-menu ">
+          <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+            <i class="fa fa-gear"></i>
+          </a>
+          <ul class="dropdown-menu settings-menu">
+            <li>
+              <ul class="menu">
+                  <li>
+                      <a style="cursor: pointer;" (click)="changePassword()" >
+                        <i class="fa fa-user text-aqua"></i> Change Password
+                      </a>
+                    </li>
+                <li>
+                  <a (click)="logout()" style="cursor: pointer;">
+                    <i class="fa fa-power-off text-aqua"></i> Logout
+                  </a>
+                </li>
+                <!-- <li>
+                            <a [routerLink]="['/changepassword']">
+                              <i class="fa fa-user text-aqua"></i> Profile
+                            </a>
+                          </li> -->
+              </ul>
+            </li>
+          </ul>
+        </li>
+        <!-- Control Sidebar Toggle Button -->
+      </ul>
+    </div>
+  </div>
+</header>

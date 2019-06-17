@@ -1,0 +1,243 @@
+<div class="user_log">
+
+  <div class="import-header " id="theme{{themenumber}}left">
+    <h3>DYNAMIC DASHBOARD</h3>
+  </div>
+
+
+  <div class="import-header1 " id="theme{{themenumber}}right">
+    <ul>
+        <li class="dropdown notifications-menu ">
+            <a  class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+              <i class="fa fa-gear"></i>
+    
+            </a>
+            <ul class="dropdown-menu settings-menu">
+              <li>
+                <ul class="menu">
+                  <li>
+                    <a (click)="changePassword()">
+                      <i class="fa fa-user text-aqua"></i> Change Password
+                    </a>
+                  </li>
+                  <li>
+                      <a (click)="UserProfile()">
+                        <i class="fa fa-user text-aqua"></i> View Profile 
+                      </a>
+                    </li>
+                </ul>
+              </li>
+    
+            </ul>
+          </li>
+      <li> <a  (click)="goToDashboard()" style="cursor: pointer;">
+        <i class="fa fa-home"></i>
+        
+      </a></li>
+    
+      <li>
+        <a (click)="logout()"  style="cursor: pointer;">
+          <img src="assets/images/user-images/logout.png" /> Logout</a>
+      </li>
+    </ul>
+  </div>
+
+
+</div>
+<div id="wrapper">
+
+  <div class="rgt_corner col-md-2 " id="them{{themenumber}}side_corner">
+    <div class="person " id="them{{themenumber}}side_cornerperson">
+      <div class="personimage">
+        <img src="assets/images/user-images/user.png" class="center-block" />
+      </div>
+      <div class="text1">
+        <h3>{{username_}}</h3>
+        <h4>{{Rolename}}</h4>
+      </div>
+
+    </div>
+    <div class="col-xs-12 no-padding">
+      <div class="col-xs-12 no-padding right-side-heading " id="theme{{themenumber}}leftsideheading">
+        <h2>Dashboard</h2>
+      </div>
+      <div class="col-xs-12 no-padding">
+        <div class="content">
+          <nav>
+            <div id="menu" class="rt-menu">
+              <ul>
+                <li>
+                  <a (click)="CreateUser()">User Mangement</a>
+
+                </li>
+                
+                <!-- <li>
+                  <a (click)="goToTrigger()">Trigger</a>
+
+                </li> -->
+
+
+              </ul>
+            </div>
+          </nav>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="rgt_side col-md-10 create_user">
+    <form action="" method="post" #testForm="ngForm">
+      <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+         <div class="form-group">
+            <label >Name<span style=color:red>*</span></label>
+            <input type="hidden" name="_id"  [(ngModel)]="user._id">
+            <input type="text" required  #username="ngModel" class="form-control" id="username" name="username"  [(ngModel)]="user.userName">
+            <div [hidden]="username.valid || username.pristine"
+            style="color:red">
+             <p  [hidden]="!username.hasError('required')">Name is required</p>               
+         
+       </div>
+          </div>
+       
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+         <div class="form-group">
+            <label >Email Id<span style=color:red>*</span></label>
+            <input type="email"  pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" required  #emailid="ngModel" class="form-control" id="emailid" name="emailid"  [(ngModel)]="user.emailId">
+            <div [hidden]="emailid.valid || emailid.pristine"
+            style="color:red">
+             <p  [hidden]="!emailid.hasError('required')">emailid is required</p>              
+             <div [hidden]="!emailid.hasError('pattern')">Email format should be <small><b>joe@abc.com</b></small></div>
+       </div>
+          </div>
+       
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+         <div class="form-group">
+            <label >Date of Birth</label>
+            <input type="date"    class="form-control" id="dob" name="dob"  [(ngModel)]="user.dob">
+     
+          </div>
+        
+      </div>
+   
+     
+      <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+         <div class="form-group">
+            <label >Role <span style=color:red>*</span></label>
+            <select name="role" required  #role="ngModel"  [(ngModel)]="user.role" class="form-control" >
+                <option [value]="SelectaRole">Select a Role</option>
+              <option *ngFor="let roles of role_list" [(ngValue)]="roles.roleId">{{roles.roleName}}</option>
+          </select>
+            
+            <!-- <input type="text" class="form-control" id="role" name="role"  [(ngModel)]="user.role"> -->
+            <div [hidden]="role.valid || role.pristine"
+            style="color:red">
+             <p  [hidden]="!role.hasError('required')">role is required</p>
+    
+         
+       </div>
+          </div>
+        
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+        <div class="form-group">
+           <label for="ParentCompany">ParentCompany<span style=color:red>*</span></label>
+             <angular2-multiselect [data]="parentcompany_list" [(ngModel)]="selectedItem" name="ParentCompany"
+     [settings]="dropdownSettings" 
+     (onSelect)="onItemSelect($event)" 
+     (onDeSelect)="OnItemDeSelect($event)" >
+ </angular2-multiselect>
+               
+        </div>
+       
+     </div>
+
+  
+   <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+      <div class="form-group">
+         <label for="mobile">Mobile<span style=color:red>*</span></label>
+         <input type="text" required  #mobileno="ngModel"  class="form-control" id="mobileno" name="mobileno"  [(ngModel)]="user.mobile">
+      </div>
+      <div [hidden]="mobileno.valid || mobileno.pristine"
+      style="color:red">
+       <p  [hidden]="!mobileno.hasError('required')">mobileno is required</p>
+
+   
+ </div>
+   </div>
+   <!-- <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+     <div class="form-group">
+        <label for="OrganizationId">Organization<span style=color:red>*</span></label>
+        
+             <select required  #Organizationid="ngModel"   class="form-control" name="Organizationid" [(ngModel)]="user.OrganizationId"  >
+               <option [value]="SelectRole">Select an Organization</option>
+              <option *ngFor="let organization of organization_list" [(ngValue)]="organization.organizationId">{{organization.organizationName}}</option>
+           </select>
+           <div [hidden]="Organizationid.valid || Organizationid.pristine"
+           style="color:red">
+            <p  [hidden]="!Organizationid.hasError('required')">Organization is required</p>     
+        
+      </div>           
+         
+     </div>
+    
+  </div> -->
+ 
+  <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+    <div class="form-group">
+       <label for="gender">Gender</label>
+       <input type="text" class="form-control" id="gender" name="gender"  [(ngModel)]="user.gender">
+    </div>
+ </div>
+
+ <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+    <div class="form-group">
+       <label for="address">Address</label>
+       <input type="text" class="form-control"id="address" name="address"  [(ngModel)]="user.address">
+    </div>
+ </div>
+ <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+   <div class="form-group">
+      <label for="nationality">Nationality</label>
+      <input type="text" class="form-control" id="nationality" name="nationality"  [(ngModel)]="user.nationality">
+   </div>
+</div>
+<div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+  <div class="form-group">
+     <label >No of Templates<span style=color:red>*</span></label>
+     <angular2-multiselect [data]="TemplatesName" [(ngModel)]="selectedtable" name="asr"
+     [settings]="dropdownSettings" 
+     (onSelect)="onTempSelect($event)" 
+     (onDeSelect)="onTempDeSelect($event)"
+   >
+ </angular2-multiselect>
+     <!-- <input type="text" required #NoOfTemplates="ngModel" class="form-control" id="NoOfTemplates" name="NoOfTemplates"  [(ngModel)]="user.NoOfTemplates"> -->
+     <!-- <div [hidden]="NoOfTemplates.valid || NoOfTemplates.pristine"
+           style="color:red">
+            <p  [hidden]="!NoOfTemplates.hasError('required')">Organization is required</p>
+    
+        
+      </div> -->
+  </div>
+</div>
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center above">
+         <div class="form-group">
+            <!-- <div class="btn btn-success" *ngIf="!status" >  <a  style="color:white" (click)="selectTemplate()">Select Template</a></div> 
+            <div class="btn btn-success" *ngIf="status" > <a style="color:white" (click)="editUser()">Edit</a></div>  -->
+        
+            <button type="submit"  (click)="addUser()" [disabled]="!testForm.form.valid" class="btn btn-success">Create User</button>
+          
+           
+          <!-- <button type="submit"  (click)="resetForm()" class="btn btn-success">Reset</button>
+          <button type="button" (click)="goToUser();" class="btn btn-danger">Cancel</button> -->
+          <!-- <button type="button" (click)="selectTemplate()" class="btn btn-success"></button> -->
+         </div>
+      </div>
+</form>
+
+
+
+
+</div>

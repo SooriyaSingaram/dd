@@ -1,0 +1,5 @@
+.User_rolelist{background: #ffffff none repeat scroll 0 0;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.08); margin-top:10px;
+    float: left; width:100%; padding:15px; min-height:265px;}
+    .User_rolelist label{font-size:16px;}
+    .User_rolelist input[type="radio"]{margin-right:7px;}.margin_adduser{margin: 20px;}.form-control{border-radius:4px;}

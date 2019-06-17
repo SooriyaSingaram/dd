@@ -1,0 +1,336 @@
+<div class="preloader" *ngIf="showloader">
+  <div class="preloader-img">
+    <img src="../assets/images/preloader.gif">
+  </div>
+</div>
+
+<app-super-admin-header></app-super-admin-header>
+
+<app-super-admin-sidebar></app-super-admin-sidebar>
+<div class="content-wrapper">
+
+
+  <div id="wrapper">
+    <div class="rgt_corner col-md-2">
+
+      <div class="col-xs-12 no-padding">
+        <div class="col-xs-12 no-padding right-side-heading">
+          <h2>Visualizations</h2>
+
+        </div>
+        <div class="col-xs-12 no-padding visualizations-charts">
+          <h2 class="chart_head">Widgets</h2>
+          <ul>
+            <li tooltip="{{item.type}}" *ngFor="let item of itemsToDrop" [dragDirective]='item' class="dragItem" (startDrag)="startDrag(item)">
+
+              <app-generic-box [genericBox]='item' class="img-responsive"></app-generic-box>
+            </li>
+          </ul>
+        </div>
+        <div class="charts_fields" *ngIf="showForm">
+          <form method="post" #chartForm="ngForm">
+
+            <h4 class="chart_head">Chart Details</h4>
+            <div class="form-group heading-data">
+              <label>Heading
+                <span style=color:red>*</span>
+              </label>
+              <input type="text" required class="form-control" name="chartname" #chartname="ngModel" [(ngModel)]="widget.chartHeading">
+            </div>
+            <div [hidden]="chartname.valid || chartname.pristine" style="color:red">
+              <p [hidden]="!chartname.hasError('required')">Heading is required</p>
+            </div>
+
+            <div class="form-group type" *ngIf="showHide">
+              <label>Chart Type
+                <span style=color:red>*</span>
+              </label>
+              <input type="radio" name="bar" (change)="normal()">Normal
+              <input type="radio" name="bar" (change)="stacked()">Stacked
+            </div>
+            <div class="form-group type" *ngIf="HideShow">
+              <label>Chart Type
+                <span style=color:red>*</span>
+              </label>
+              <input type="radio" name="line" (change)="normalline()">Normal
+              <input type="radio" name="line" (change)="stackedline()">Stacked
+            </div>
+
+            <h4 class="chart_head">Chart Fields</h4>
+            <div class="axis-cnt">
+              <h4 class="axis">X- Axis
+                <span style=color:red>*</span>
+              </h4>
+              <select name="xaxis" #xaxis="ngModel" [(ngModel)]="x_axis" (ngModelChange)="DataXaxis(x_axis)" required>
+                <option [value]="label" disabled>Select Label</option>
+                <option [value]="dropdown" *ngFor="let dropdown of chartfields">{{dropdown}}</option>
+              </select>
+            </div>
+            <div [hidden]="xaxis.valid || xaxis.pristine" style="color:red">
+              <p [hidden]="!xaxis.hasError('required')">Select label</p>
+            </div>
+
+            <div class="axis-cnt">
+              <h4 class="axis">Y- Axis
+                <span style=color:red>*</span>
+              </h4>
+              <select name="yaxis" #yaxis="ngModel" [(ngModel)]="y_axis" (ngModelChange)="DataYaxis(y_axis)" required>
+                <option [value]="value" disabled>Select Value</option>
+                <option [value]="dropdown" *ngFor="let dropdown of chartfields">{{dropdown}}</option>
+              </select>
+            </div>
+            <div [hidden]="yaxis.valid || yaxis.pristine" style="color:red">
+              <p [hidden]="!yaxis.hasError('required')">Select Value</p>
+            </div>
+
+            <div class="axis-cnt" *ngIf="ZAxis">
+              <h4 class="axis">Z- Axis
+                <span style=color:red>*</span>
+              </h4>
+              <select name="zaxis" #zaxis="ngModel" [(ngModel)]="z_axis" (change)="DataZaxis(z_axis)" required>
+                <option value="name" disabled>Select Name</option>
+                <option [ngValue]="dropdown" *ngFor="let dropdown of chartfields">{{dropdown}}</option>
+              </select>
+            </div>
+
+            <h4 class="chart_head">Chart Description</h4>
+
+            <textarea #chartdesc="ngModel" class="form-control" name="chartdesc" [(ngModel)]="widget.graphDefinition "></textarea>
+
+            <!-- <h4 class="chart_head">Summary By</h4>
+
+          <angular2-multiselect [data]="fields" [(ngModel)]="widget.summaryByFields" name="filters"  [settings]="dropdownSettings" ></angular2-multiselect> -->
+
+
+            <div class="radio_butttons">
+              <h4 class="axis">Export options</h4>
+              <div class="from_radio_cnt">
+                <input type="checkbox" [checked]="widget.exportCSV" (click)="setcsvexport($event.target.checked)" name="csvexport">
+                <span>Export to csv</span>
+              </div>
+              <div class="from_radio_cnt">
+                <input type="checkbox" [checked]="widget.exportPDF" (click)="setpdfexport($event.target.checked)" name="pdfexport">
+                <span>Export to pdf report </span>
+              </div>
+              <div class="from_radio_cnt">
+                <input type="checkbox" [checked]="widget.exportMail" (click)="setmailexport($event.target.checked)" name="mailexport">
+                <span>Email graph</span>
+              </div>
+
+            </div>
+
+            <div class="col-sm-12">
+              <button type="submit" class="btn btn-success" [disabled]="!chartForm.form.valid" (click)="create()">Create Widget</button>
+            </div>
+
+          </form>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="rgt_side col-md-10">
+      <div class="col-xs-12 col-sm-12 col-md-10 col-lg-10">
+        <h2> Template </h2>
+        <ul class="breadcrumb">
+          <li>
+            <a>Home</a>
+          </li>
+          <li>
+            <a>Template</a>
+          </li>
+        </ul>
+      </div>
+
+      <form action="" method="post" #testForm="ngForm">
+
+        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+
+          <div class="form-group">
+            <label>Page Heading
+              <span style=color:red>*</span>
+            </label>
+            <input type="text" required #pagename="ngModel" class="form-control" name="page_name" [(ngModel)]="template.dashboardName">
+            <div [hidden]="pagename.valid || pagename.pristine" style="color:red">
+              <p [hidden]="!pagename.hasError('required')">Heading is required</p>
+
+            </div>
+          </div>
+        </div>
+
+
+        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+          <div class="form-group">
+            <label>Select Filter Field</label>
+
+            <mat-form-field>
+              <mat-select name="filter_fields" [(ngModel)]="itemName" (ngModelChange)="onItemSelect(itemName)" [multiple]="true">
+                <mat-option *ngFor="let filterFields of chartfields" [value]="filterFields">
+                  {{filterFields}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+
+
+          </div>
+        </div>
+
+        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+          <div class="form-group">
+            <label>Default Filter</label>
+
+            <mat-form-field>
+              <mat-select name="filter_fields" [(ngModel)]="default" (change)="onDefault(default)" [multiple]="true">
+                <mat-option *ngFor="let filterFields of defaultfilters" [value]="filterFields">
+                  {{filterFields}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+
+          </div>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 chckbox_space">
+
+          <label>Dashboard Export Options</label>
+
+          <input type="checkbox" [checked]="template.pageExport" (click)="pdfexport($event.target.checked)" name="pdfexport">
+          <span>Export to pdf report </span>
+
+          <input type="checkbox" [checked]="template.mailDashboard" (click)="mailexport($event.target.checked)" name="mailexport">
+          <span>Email Dashboard</span>
+
+        </div>
+        <form [formGroup]="invoiceForm">
+          <div formArrayName="itemRows">
+            <div *ngFor="let itemrow of invoiceForm.controls.itemRows.controls; let i=index" [formGroupName]="i">
+
+
+
+
+              <div class="col-sm-11 Condition_heading" style="padding:0;width:98%;float:right">
+                <div class="add_box condition_label">
+                  <div class="form-group">
+                    <label *ngIf="i == 0">Conditions</label>
+                    <h4 style="margin-bottom:0;">Condition #{{ i + 1 }}</h4>
+                  </div>
+                </div>
+                <div class="add_box">
+                  <div class="form-group">
+                    <label *ngIf="i == 0">Property Name</label>
+                    <select class="form-control" formControlName="FormPropertyName" name="propertyName">
+                      <option value="">Select a propertyName</option>
+                      <option *ngFor="let tfields of chartfields">{{tfields}}</option>
+                    </select>
+
+
+
+                  </div>
+                </div>
+                <div class="add_box">
+                  <div class="form-group">
+                    <label *ngIf="i == 0">Comparision Operator</label>
+                    <select class="form-control" formControlName="FormComparisonOperator" name="comparisonOperator">
+                      <option [ngValue]="SelectRole">Select a Comparison Operator</option>
+                      <option *ngFor="let coperator of comparison_operator">{{coperator}}</option>
+                    </select>
+                  </div>
+                </div>
+
+
+                <div class="add_box">
+                  <div class="form-group">
+                    <label *ngIf="i == 0">Condition Value</label>
+                    <input type="text" class="form-control" formControlName="FormConditionValue" id="password" name="ConditionValue">
+                  </div>
+                </div>
+                <div class="add_button">
+                  <button *ngIf="i != 0" (click)="deleteRow(i)" class="btn btn-danger">-</button>
+                </div>
+              </div>
+
+            </div>
+          </div>
+          <div class="col-xs-12 col-sm-12 col-md-11 col-lg-11 text-right">
+            <div class="add_button1" style="height:auto;margin-top:0;">
+              <button type="button" (click)="addNewRow()" class="btn btn-primary add_row">+</button>
+            </div>
+          </div>
+
+        </form>
+      </form>
+      <div class="col-sm-12" *ngIf="dropArea">
+
+        <div class="col-sm-12 paddinglef" style="padding-bottom:15px;padding-top:15px;">
+          <div class="engaged">
+            <h4>drop Here</h4>
+            <div class="close_btn">
+              <button *ngIf="close_1" class="pencil" (click)="close1()">close</button>
+            </div>
+            <div dropDirective (dropEvent)="addDropItem('itemsDropped1',$event);" class="droppable" [dropHighlight]="'highlight'">
+              <app-generic-box *ngFor="let item of itemsDropped1" [genericBox]='item' class="dropItem"></app-generic-box>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-12">
+          <div class="engaged user">
+            <h4>drop Here</h4>
+            <div class="close_btn">
+              <button *ngIf="close_2" class="pencil" (click)="close2()">close</button>
+            </div>
+            <div dropDirective (dropEvent)="addDropItem('itemsDropped2',$event);" class="droppable" [dropHighlight]="'highlight'">
+              <app-generic-box *ngFor="let item of itemsDropped2; let i=index" [genericBox]='item' class="dropItem"></app-generic-box>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-12">
+          <div class="engaged user">
+            <h4>drop Here</h4>
+            <div class="close_btn">
+              <button *ngIf="close_3" class="pencil" (click)="close3()">close</button>
+            </div>
+            <div dropDirective (dropEvent)="addDropItem('itemsDropped3',$event);" class="droppable" [dropHighlight]="'highlight'">
+              <app-generic-box *ngFor="let item of itemsDropped3; let i=index" [genericBox]='item' class="dropItem"></app-generic-box>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-12">
+          <div class="engaged user">
+            <h4>drop Here</h4>
+            <div class="close_btn">
+              <button *ngIf="close_4" class="pencil" (click)="close4()">close</button>
+            </div>
+            <div dropDirective (dropEvent)="addDropItem('itemsDropped4',$event);" class="droppable" [dropHighlight]="'highlight'">
+              <app-generic-box *ngFor="let item of itemsDropped4; let i=index" [genericBox]='item' class="dropItem"></app-generic-box>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-12">
+          <div class="engaged user">
+            <h4>drop Here</h4>
+            <div class="close_btn">
+              <button *ngIf="close_5" class="pencil" (click)="close5()">close</button>
+            </div>
+            <div dropDirective (dropEvent)="addDropItem('itemsDropped5',$event);" class="droppable" [dropHighlight]="'highlight'">
+              <app-generic-box *ngFor="let item of itemsDropped5; let i=index" [genericBox]='item' class="dropItem"></app-generic-box>
+            </div>
+          </div>
+        </div>
+
+
+      </div>
+      <div class="col-sm-12">
+        <!-- <button type="submit" class="btn btn-success" [disabled]="!testForm.form.valid" (click)="createTemplate()">Create Template</button> -->
+        <button type="submit" class="btn btn-success" [disabled]="!enablecreatetemplate" (click)="createTemplate()">Create Template</button>
+        <!-- <button type="submit" class="btn btn-success" *ngIf="btnStatus" [disabled]="!testForm.form.valid" (click)="customizeTemplate();">Customize Template</button> -->
+        <button type="submit" class="btn btn-success" *ngIf="btnStatus" [disabled]="!enablecreatetemplate" (click)="customizeTemplate();">Customize Template</button>
+        
+      </div>
+
+      <app-super-admin-footer></app-super-admin-footer>
+
+
+    </div>

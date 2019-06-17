@@ -1,0 +1,67 @@
+
+  <app-super-admin-header></app-super-admin-header>
+  
+    <app-super-admin-sidebar></app-super-admin-sidebar>
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 head_title super_top_space">
+   </div>
+  <div class="super_admin_center">
+    
+              <div class="col-xs-12 col-sm-12 col-md-10 col-lg-10">
+                 <h2> Triggers</h2>
+                 <ul class="breadcrumb">
+                    <li><a >Home</a></li>
+                    <li><a >Triggers</a></li>
+                 </ul>
+              </div>
+              <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 text-right">
+                 <button type="button" class="btn btn-success" *ngIf="allowAddOrg" (click)="addTrigger()">Add Trigger</button>
+              </div>
+              <div class="sectionuser">
+                  <div class="sub_custom_table">
+                 
+                     <div class="row">
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                           <div class="table_list">
+                              <h2 class="table_head_section">List Of Triggers</h2>
+                              <div class="table-responsive">
+                                 <table class="table" id="example" >
+                                    <thead>
+                                       <tr>
+                                          <th>Condition Name</th>
+                                         
+                                         <th>Organization Name</th>
+                                         <th>Period</th>
+                                        <th>Template</th>
+                                          <th class="text-center" *ngIf = "showDelete || showEdit">Actions</th>
+                                       </tr>
+                                    </thead>
+                                    <tbody>
+                                       <tr *ngFor=" let detail of message | paginate: { itemsPerPage: 10, currentPage: p }; let i = index" >
+                                           <!-- <td >{{i+1}}</td> -->
+                                          <!-- <td >{{i+1}}</td> -->
+                                          <td >{{detail.ConditionName}}</td>
+                                          
+                                          <td>{{detail.OrganizationId.organizationName}}</td>
+                                          <td>{{detail.Period}}</td>
+                                          <td>{{detail.Template}}</td>
+                                        
+                                      <td class="text-center"> <a class="btn btn-danger btn-xs" *ngIf="showDelete" (click)="onDelete(detail)">   <i class="fa fa-trash" aria-hidden="true"></i>  </a>
+                                         <a class='btn btn-success btn-xs' (click)="onSelect(detail)" *ngIf="showEdit" >  <i class="fa fa-pencil" aria-hidden="true"></i> </a>
+                                      </td>
+                                       </tr>
+                                    </tbody>
+                                 </table>
+                              </div>
+                           </div>
+                        </div>
+                        <!--column1-->
+                     </div>
+                  </div>
+               </div>
+
+               <pagination-controls (pageChange)="p = $event"></pagination-controls>
+               
+              <!-- /.content-wrapper --> 
+           </div>
+           <app-super-admin-footer></app-super-admin-footer>
+           

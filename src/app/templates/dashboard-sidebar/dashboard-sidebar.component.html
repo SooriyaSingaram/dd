@@ -1,0 +1,49 @@
+<div class="preloader" *ngIf="showloader"><div class="preloader-img"> <img src="../../../assets/images/preloader.gif"></div></div>
+
+<div class="rgt_corner col-md-2 " id="them{{themenumber}}side_corner">
+    <div class="import-header " id="theme{{themenumber}}left">
+        <h3><span class="mobil_icon" (click)="changeShowStatus()"> <i class="fa fa-bars" aria-hidden="true"></i></span> <span class="desktop"> DYNAMIC</span> DASHBOARD </h3>
+      </div>
+      <div class="box_mobile respnsive_mobile" id="respnsive_mobile">
+    <div class="person " id="them{{themenumber}}side_cornerperson">
+      <div class="uploading-img1">
+          <img src="http://35.170.221.105:4000/uploads/{{orglogo}}"/>
+          <!-- <img src="'http://192.168.1.31:4000/uploads/{{orglogo}}"/> -->
+          
+            </div>
+      <div class="text2">
+        <h3>{{username}}</h3>
+        <h4>{{Rolename}}</h4>
+      </div>
+
+    </div>
+    <div class="col-xs-12 no-padding">
+      <div class="col-xs-12 no-padding right-side-heading " id="theme{{themenumber}}leftsideheading">
+        <h2>Dashboard</h2>
+      </div>
+      <div class="col-xs-12 no-padding">
+        <div class="content">
+          <nav>
+            <div id="menu" class="rt-menu">
+              <!-- <ul>
+                <li routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+                  <a  [routerLink]="['/homepage']" (click)="GoToHome()" style="cursor: pointer;"> <i class="fa fa-home" aria-hidden="true"></i> Home</a>
+
+                </li>
+                <li *ngIf="hideusercreation">
+                  <a (click)="CreateUser()"> User Mangement</a>
+
+                </li>
+
+
+
+              </ul> -->
+              <ul *ngFor="let menu of samplearray" (click)="select(menu)"><li style=" cursor: pointer; "[ngClass]="{active: menu.id == IdValue}"><a (click)="loadTableData(menu.id)">  <i class="fa fa-bar-chart" aria-hidden="true"></i> {{menu.itemName}}</a></li></ul>
+              <!-- <ul *ngFor="let menu of samplearray"><li style=" cursor: pointer; "><a (click)="loadTableData(menu.id)">{{menu.menu}}</a></li></ul> -->
+            </div>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>

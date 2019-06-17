@@ -1,0 +1,127 @@
+<div class="preloader" *ngIf="showloader">
+    <div class="preloader-img">
+<img src="../assets/images/preloader.gif">
+      </div>
+</div>
+
+<app-it-header></app-it-header>
+<app-it-side-bar></app-it-side-bar>
+<div class="It_admin_center">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <h2>Add Users</h2>
+        <ul class="breadcrumb">
+            <li>
+                <a >Home</a>
+            </li>
+            <li>
+                <a>Users</a>
+            </li>
+            <li>
+                <a>Add Admin</a>
+            </li>
+        </ul>
+    </div>
+    <div class="add_user">
+        <div class="row" *ngIf="addAdmin">
+            <form action="" method="post" #testForm="ngForm">
+                <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                    <div class="form-group">
+                        <label>Name
+                            <span style=color:red>*</span>
+                        </label>
+                        <input type="hidden" name="_id" [(ngModel)]="users._id">
+                        <input type="text" required #username="ngModel" class="form-control" id="username" name="username" [(ngModel)]="users.userName">
+                        <div [hidden]="username.valid || username.pristine" style="color:red">
+                            <p [hidden]="!username.hasError('required')">Name is required</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                    <div class="form-group">
+                        <label>Email Id
+                            <span style=color:red>*</span>
+                        </label>
+                        <input type="email" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" required #emailid="ngModel" class="form-control"
+                            id="emailid" name="emailid" [(ngModel)]="users.emailId">
+                        <div [hidden]="emailid.valid || emailid.pristine" style="color:red">
+                            <p [hidden]="!emailid.hasError('required')">emailid is required</p>
+                            <div [hidden]="!emailid.hasError('pattern')">Email format should be
+                                <small>
+                                    <b>joe@abc.com</b>
+                                </small>
+                            </div>
+                        </div>
+                    </div></div>
+                    <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                        <div class="form-group">
+                            <label for="mobile">Phone     
+                            </label>
+                            <input type="text"  #mobileno="ngModel" class="form-control" id="mobileno" name="mobileno" [(ngModel)]="users.mobile"pattern="[0-9]*"
+                            minlength="10"
+                            maxlength="15">
+                          </div>
+                          <div [hidden]="mobileno.valid || mobileno.pristine" style="color:red">
+                              <div [hidden]="!mobileno.hasError('minlength')">Phone Number should be Min 10 digit</div>
+                              <div [hidden]="!mobileno.hasError('pattern')">Phone Number number should be only numbers</div>
+                          </div> 
+                    </div>
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center above">
+                    <div class="form-group">
+                      
+                        <button type="submit" *ngIf="!status" (click)="saveuser()" [disabled]="!testForm.form.valid" class="btn btn-success">Create Admin</button>
+                        <button type="submit" *ngIf="status" (click)="editUser()" class="btn btn-success">Edit Admin</button>
+                        <button type="submit" (click)="resetForm()" class="btn btn-success">Reset</button>
+                        <!-- <button type="button" (click)="goToUser();" class="btn btn-danger">Cancel</button> -->
+                    </div>
+                </div>
+            </form>
+        </div>
+       
+        <div class="sectionuser" *ngIf="allowRead">
+          <div class="sub_custom_table">
+            <!--column1-->
+            <div class="row">
+              <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="table_list">
+                  <h2 class="table_head_section">List Of Admins</h2>
+                  <div class="table-responsive">
+                    <table class="table" id="example" >
+                      <thead>
+                        <tr>
+                          <th>User Id</th>
+                          <th> Admin Name</th>
+                          <th>Email Id</th>
+
+                            <th class="text-center" *ngIf="allowDelete || allowEdit ">Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let data of adminList | paginate: { itemsPerPage: 10, currentPage: p }">
+                          <td>{{data.userId}}</td>
+                          <td>{{data.userName}}</td>
+                          <td>{{data.emailId}}</td>
+                          <td class="text-center">
+                            <a class="btn btn-danger btn-xs" *ngIf="allowDelete" (click)="onDelete(data)">
+                              <i class="fa fa-trash" aria-hidden="true"></i>
+                            </a>
+                            <a class='btn btn-success btn-xs' *ngIf="allowEdit" (click)="onSelect(data)">
+                              <i class="fa fa-pencil" aria-hidden="true"></i>
+                            </a>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>             
+            </div>
+          </div>
+        </div>
+    </div>
+
+    <pagination-controls (pageChange)="p = $event"></pagination-controls>
+    
+    <!-- /footer -->
+    <!-- /.content-wrapper -->
+</div>
+<app-it-footer></app-it-footer>

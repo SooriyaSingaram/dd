@@ -1,0 +1,28 @@
+
+  <!-- Left side column. contains the logo and sidebar -->
+  <aside class="main-sidebar newstyle">
+     <!-- sidebar: style can be found in sidebar.less -->
+     <section class="sidebar">
+        <!-- Sidebar Menu -->
+        <ul class="sidebar-menu accordianMenu menu">          
+          <li class="accord"><a class="togglecla" > <span> <span class="user_icon"> <i class="fa fa-user-circle-o" aria-hidden="true"></i></span> {{username}}</span></a></li>
+            
+            <hr>
+            <!-- <li class="accord" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"><a [routerLink]="['/it-admin-layout']" ><img src="../assets/images/IT-Admin-images/b2.png" alt=""/> <span>Home</span></a></li>            -->
+
+         </ul>
+         <!-- <ul class="sidebar-menu accordianMenu menu" *ngFor="let menu of menulist" (click)="select(menu)"><li class="accord" style=" cursor: pointer; "[ngClass]="{active: isActive(menu)}"><a >{{menu}}</a></li></ul> -->
+
+        <ul class="sidebar-menu accordianMenu menu">
+           <li class="accord" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"><a (click)="redirect('/it-admin-layout')"><i class="fa fa-home" aria-hidden="true"></i> <span>Home</span></a></li>           
+           <li class="accord" routerLinkActive="active" *ngIf="orgMenu"><a  (click)="redirect('/editorg')"><i class="fa fa-align-left" aria-hidden="true"></i> <span> Edit Organisation</span></a></li>
+           <li class="accord " routerLinkActive="active" *ngIf="userMenu" ><a  (click)="redirect('/it-admin-userlist')"><i class="fa fa-users" aria-hidden="true"></i> <span>Users Management</span></a></li>
+           <li class="accord" routerLinkActive="active" *ngIf="adminMenu"><a  (click)="redirect('/adminmanagement/0')"><i class="fa fa-user-circle" aria-hidden="true"></i> <span>Admin Mangement</span></a>
+           </li>
+        </ul>
+        <!-- /.sidebar-menu --> 
+     </section>
+     <!-- /.sidebar --> 
+  </aside>
+
+  

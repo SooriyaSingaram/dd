@@ -1,0 +1,91 @@
+<app-super-admin-header>
+</app-super-admin-header>
+
+
+<app-super-admin-sidebar></app-super-admin-sidebar>
+
+<!-- Content Wrapper. Contains page content -->
+
+
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 head_title super_top_space">
+
+</div>
+<div class="super_admin_center">
+  <div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-10 col-lg-10">
+      <h2> Organisation </h2>
+      <ul class="breadcrumb">
+        <li>
+          <a>Home</a>
+        </li>
+        <li>
+          <a>Organisation</a>
+        </li>
+      </ul>
+    </div>
+    <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 text-right" *ngIf="allowAddOrg">
+      <button type="button" class="btn btn-success" (click)="addOrg();">Add Organisation</button>
+    </div>
+  </div>
+  <div class="sectionuser">
+    <div class="sub_custom_table">
+      <!--column1-->
+      <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+          <div class="table_list">
+            <h2 class="table_head_section">List Of Organisation</h2>
+            <div class="table-responsive">
+              <table class="table" id="example">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th  >Organization Name
+                    </th>
+                    <th>
+                      Partner Name
+                    </th>
+                    <th>
+                      Phone
+                    </th>
+                    <th>
+                      Country
+                    </th>
+                    <th class="text-center" *ngIf = "showDelete || showEdit">Actions</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  <tr *ngFor=" let detail of organisation ; let i = index; ">
+                    <td>{{i+1}}</td>
+                    <!-- <td hidden>{{detail._id}}</td> -->
+                    <td>{{detail.organizationName}}</td>
+                    <td>{{detail.PartnerName}}</td>
+                    <td>{{detail.mobile}}</td>
+                    <td>{{detail.country}}</td>
+
+                    <td class="text-center">
+                      <a class="btn btn-danger btn-xs" *ngIf="showDelete" (click)="onDelete(detail)">
+                        <i class="fa fa-trash" aria-hidden="true"></i>
+                      </a>
+                      <a class='btn btn-success btn-xs' *ngIf="showEdit" (click)="onSelect(detail)">
+                        <i class="fa fa-pencil" aria-hidden="true"></i>
+                      </a>
+                    </td>
+                  </tr>
+
+
+
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <!--column1-->
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<app-super-admin-footer></app-super-admin-footer>
+<!-- /.content-wrapper -->

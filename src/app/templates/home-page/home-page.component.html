@@ -1,0 +1,81 @@
+
+<div class="preloader" *ngIf="showloader"><div class="preloader-img"> <img src="../../../assets/images/preloader.gif"></div></div>
+<app-dashboard-header></app-dashboard-header>
+
+
+  <app-dashboard-sidebar></app-dashboard-sidebar>
+
+  <div class="rgt_side col-md-10">
+    <div class="iconic_lst">
+      <div *ngFor="let widgets of widgetsResult">
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
+          <div class="dashbord_user">
+            <img src="../assets/images/user-images/3a.png">
+            <div class="right_value_count" style="text-align: center">
+              <h4>Total {{widgets.companyName}} Returns</h4>
+              <h4>Weight</h4>
+              <h3>{{widgets.Weight}}</h3>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div *ngFor="let widgets of widgetsResult">
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
+          <div class="dashbord_user second">
+              <img src="../assets/images/user-images/4a.png">
+            <div class="right_value_count" style="text-align: center">
+              <h4>Total {{widgets.companyName}} Returns</h4>
+              <h4> Quantity</h4>
+              <h3>{{widgets.Quantity}}</h3>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="sectionuser">
+        <div class="sub_custom_table">
+          <!--column1-->
+          <div class="row">
+
+            <div *ngFor="let returns of MarketShareTable">
+              <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4" >
+                <div class="table_list bottom_space"  style="height: 21em;">
+                  <h2 class="table_head_section">{{returns.ParentCompany}}</h2>
+                  <div class="table-responsive">
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th>Company Name</th>
+                          <th>
+                           Quantity
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor=" let detail of returns.CompanyList">
+                          <td>{{detail.CompanyName}}</td>
+                          <td>{{detail.Quantity}}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+</div>
+</div>
+
+<div class="super_foot">
+    <div class="footer">
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center">
+         <p> Copyrights@2018 | Dynamic Dashboard</p>
+      </div>
+    </div>
+    </div>
+   

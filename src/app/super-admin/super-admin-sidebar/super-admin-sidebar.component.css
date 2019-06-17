@@ -1,0 +1,25 @@
+.main-sidebar{position: fixed;left: 0;}
+.sidebar-menu li.active a{background:#e5e5e5 none repeat scroll 0 0; font-size: 18px; color: #626262; border-left:none;} 
+.main-sidebar, .left-side{background-color: #f7f7f9;}
+.sidebar-menu .sub_menu li a {
+    color: #616161;
+    font-size: 18px;
+    font-family: 'ProximaNova-Bold';
+    padding: 5px 5px 5px 8px;
+    width: 100%;
+    float: left;
+}
+.sidebar-menu > li > a {
+    color: #616161;
+    font-size: 18px;
+    font-family: 'ProximaNova-Bold';
+}
+
+.sidebar-menu li{width:100%; float:left;}
+ .sidebar-menu .sub_menu li a{color:#616161; font-size:18px;  font-family: 'ProximaNova-Bold';}
+ .sidebar-menu .sub_menu li:hover { background:transparent !important;  color: #616161;}
+.sidebar-menu .sub_menu li:hover a{ color: #616161;}
+.sidebar-menu .sub_menu  li a{color:#616161; font-size:18px;  font-family: 'ProximaNova-Bold'; padding:5px 5px 5px 8px; width:100%; float:left;}
+.accord a{
+    cursor: pointer
+}

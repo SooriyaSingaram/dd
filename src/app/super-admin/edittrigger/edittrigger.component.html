@@ -1,0 +1,122 @@
+<app-super-admin-header></app-super-admin-header>
+<app-super-admin-sidebar></app-super-admin-sidebar>
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 head_title super_top_space"> </div>
+<div class="super_admin_center">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="padding:0;">
+                <h2 style="margin:0;"> Trigger</h2>
+                <ul class="breadcrumb" style="padding-bottom: 0;">
+                    <li><a [routerLink]="['/super-admin']">Home</a></li>
+                    <li><a>Edit Trigger</a></li>
+                </ul>
+            </div>
+    <div class="add_user" style="margin-top:0;padding:10px 20px;">
+      
+        <div class="row">
+            <form action="" #testForm="ngForm" >
+                <!-- <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                    <div class="form-group">
+                        <label>Condition Name<span style=color:red>*</span></label>
+                        <select class="form-control" required name="conditionName" [(ngModel)]="message.ConditionName" (ngModelChange)="selectFields(message.ConditionName)">
+                  <option [ngValue]="SelectRole">Select a conditionName</option>
+                  <option *ngFor="let col of table | orderBy : 'name'"   [(ngValue)]="col.name">{{col.name}}</option>
+                  </select>
+                    </div>
+                </div> -->
+                <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4" [hidden]="status">
+                    <div class="form-group">
+                        <label>Time Period<span style=color:red>*</span></label>
+                        <select required #Period="ngModel" class="form-control" name="Period" [(ngModel)]="message.Period">
+                  <option [ngValue]="Select">Select Period</option>
+                  <option *ngFor="let data of period"  >{{data}}</option>
+                  </select>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4" [hidden]="organizationShow">
+                    <div class="form-group">
+                        <label>Organization<span style=color:red>*</span></label>
+                        <select class="form-control" required #Organizationid="ngModel" (ngModelChange)=loadUsers(message.OrganizationId,message.UsersList) name="Organizationid" [(ngModel)]="message.OrganizationId">
+                  <option [ngValue]="SelectRole">Select an Organization</option>
+                  <option *ngFor="let organization of organization_list | orderBy : 'organizationName'" [(ngValue)]="organization._id">{{organization.organizationName}}</option>
+                  </select>
+                        <div [hidden]="Organizationid.valid || Organizationid.pristine" style="color:red">
+                            <p [hidden]="!Organizationid.hasError('required')">Organization is required</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                    <div class="form-group">
+                        <label>Users List<span style=color:red>*</span></label>
+                        <angular2-multiselect [data]="users" required  [(ngModel)]="message.UsersList" name="selectedItems" [settings]="dropdownSettings" (onSelect)="onItemSelect($event)"
+                            (onDeSelect)="OnItemDeSelect($event)" (onSelectAll)="onSelectAll($event)" (onDeSelectAll)="onDeSelectAll($event)">
+                        </angular2-multiselect>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                    <div class="form-group">
+                        <label>Template<span style=color:red>*</span></label>
+                        <select #Template="ngModel" class="form-control" name="Template" [(ngModel)]="message.Template">
+                  <option [ngValue]="SelectRole">Select Template</option>
+                  <option *ngFor="let template of template_list | orderBy : 'templateName'">{{template.templateName}}</option>
+                  </select>
+                  <div [hidden]="Template.valid || Template.pristine" style="color:red">
+                    <p [hidden]="!Template.hasError('required')">Template is required</p>
+                </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <hr>
+        <form name="userForm" class="trigger_form">
+      
+            <div>
+                <div class="condition condition_headr">
+                    <div class="contHead">Conditions</div>
+                    <div>Property Name</div>
+                    <div>Comparison Operator</div>
+                    <div>ConditionValue</div>
+                    <div></div>
+                </div>
+                <div class="condition" *ngFor="let item of  message.conditionList; let in = index">
+                    <div class="triggerSet">
+                        <div *ngIf="in != 0" class="condition_from">
+                            <select class="form-control operator" name="ConditionName-{{in}}" [(ngModel)]="item.ConditionName">
+                                 <option value="">Select Condition</option>
+                            <option> OR</option>
+                          <option >AND</option>
+                          </select>
+                        </div>
+                        </div>
+                    <div class="contHead">
+                         Condition #{{ in + 1 }}</div>
+                    
+                    <div class="condition_from">
+                        <select class="form-control" class="form-control" #property required  name="property{{in}}" [(ngModel)]="item.PropertyName" required>
+                      <option  value="">Select a propertyName</option>
+                      <option *ngFor="let tfields of field | orderBy " [value]="tfields">{{tfields}}</option>
+                      </select>
+                    </div>
+                    <div class="condition_from">
+                        <select class="form-control" name="comparisonOperator-{{in}}" [(ngModel)]="item.ComparisonOperator">
+                      <option value="">Select a Comparison Operator</option>
+                      <option *ngFor="let coperator of comparison_operator"   >{{coperator}}</option>
+                      </select>
+                    </div>
+                    <div class="condition_from"><input type="text" class="form-control" name="conditionValue-{{in}}" [(ngModel)]="item.ConditionValue"></div>
+                    <div *ngIf="in != 0">
+                        <button (click)="remove(in)" class="btn btn-danger add_row" >-</button>
+
+
+                    </div>
+                    
+
+                </div>
+            </div>
+            <button (click)="addRow()" class="btn btn-primary add_row">+</button>
+        </form><br>
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center above">
+            <button type="submit" *ngIf="state" [disabled]="!testForm.form.valid" (click)="updateTrigger()" class="btn btn-success">Update Trigger</button>
+        </div>
+    </div>
+</div>
+<app-super-admin-footer></app-super-admin-footer>
+

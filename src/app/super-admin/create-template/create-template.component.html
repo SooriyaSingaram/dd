@@ -1,0 +1,68 @@
+<app-super-admin-header></app-super-admin-header>
+
+<app-super-admin-sidebar></app-super-admin-sidebar>
+
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 head_title super_top_space">
+      </div>
+     
+  <div class="super_admin_center">
+  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+     <h2>Add Template</h2>
+     <ul class="breadcrumb">
+        <li><a>Home</a></li>
+        
+        <li><a>Select Template</a></li>
+     </ul>
+  </div>
+  <div class="row">
+          
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+       <h4> Select Template<span style=color:red>*</span></h4>
+       <div class="temaplete_select">
+          <ul *ngFor="let temp of templates">
+              <li>
+                <input type="radio" name="temp" [disabled]="status ? true : false " (change)="OnTempSelect(temp.name)"  [value]="temp.name" [(ngModel)]="template.templateType" >
+                <img src='{{temp.template}}' class="temp_select">
+              </li>
+            </ul>
+       </div>
+       <p style="color:red" *ngIf="tempshowhide" >Please Select Template Type</p>               
+       
+
+    </div>
+    <form action="" method="post" #testForm="ngForm">
+        
+        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+           <div class="form-group">
+              <label >Template Name<span style=color:red>*</span></label>
+              <input type="text" required #templatename="ngModel" class="form-control" id="templatename" name="template_name" [(ngModel)]="template.templateName">
+              <div [hidden]="templatename.valid || templatename.pristine"
+              style="color:red">
+               <p  [hidden]="!templatename.hasError('required')">Template Name is required</p>               
+           
+         </div>
+            </div>
+         
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-6">
+            <div class="form-group">
+               <label >Template Description</label>
+               <textarea  #templatedec="ngModel" class="form-control" id="template_desc" name="templatedesc" [(ngModel)]="template.templateDefinition"></textarea>
+             </div>
+          
+         </div>
+      </form>
+
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center">
+       <div class="form-group">
+          <button type="submit"  *ngIf="!status" class="btn btn-success template" [disabled]="!testForm.form.valid" (click)="confirmTemplate(template)">Create Template</button>
+          <button type="submit" *ngIf="status" class="btn btn-success template" [disabled]="!testForm.form.valid" (click)="editTemplate(template)">Edit Template</button>
+
+          <button type="button" class="btn btn-danger" (click)="goBack()">Cancel</button>
+       </div>
+    </div>
+  </div>
+   
+    
+ </div>
+ <app-super-admin-footer></app-super-admin-footer>

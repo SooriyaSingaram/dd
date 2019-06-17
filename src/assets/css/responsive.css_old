@@ -1,0 +1,34 @@
+@media only screen and (max-width:991px) 
+{
+ /*****************mobile_menu*************/	
+ .mobile_ico{display:block;}
+ .lft_sde {width:100%; position:relative;}
+ .lft_sde ul { background: #df6234 none repeat scroll 0 0; display: none;position: absolute;top: 51px; width: 100%;
+z-index: 9;}
+/*****************mobile_menu*************/	
+  .rgt_side{width:100%;}
+  .rgt_mg .lft_user_detail {
+  float: left;
+  margin-top: 29px;
+}
+.item_des {
+  margin-top: 25px;
+}
+
+.mob_lft_remove {
+  padding-left: 0;
+}
+
+}
+@media only screen and (min-width :600px) and (max-width :1280px){
+  .newstyle {
+    height: 1309px!important;
+  }
+  .admin-layout{height: 1609px!important;}
+  }
+  @media only screen and (max-width:1000px) 
+  {
+    .newstyle {
+      height: 1369px!important;
+    }
+  }

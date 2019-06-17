@@ -1,0 +1,148 @@
+<app-super-admin-header>
+
+</app-super-admin-header>
+<!-- Left side column. contains the logo and sidebar -->
+<app-super-admin-sidebar></app-super-admin-sidebar>
+<!-- Content Header (Page header) -->
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 head_title super_top_space">
+</div>
+<div class="super_admin_center">
+ 
+  <div class="iconic_lst">
+    <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+      <div class="sub_iconic_lst violet_txt_clr">
+        <a class="ico-block"><span><img src="../assets/images/Super-Admin-images/data_icon.png" alt=""/></span></a>
+        <div class="right_value_count">{{OrgCount}}</div>
+        <div class="w-meta-info">
+          <span class="w-meta-title">No. of Organization</span>
+        </div>
+
+        <div class="progressbar">
+          <div></div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+      <div class="sub_iconic_lst green_txt_clr">
+        <a class="ico-block"><span><img src="../assets/images/Super-Admin-images/data_icon.png" alt=""/></span></a>
+        <div class="right_value_count">{{OrgAdminList.length + ITAdmin.length}}</div>
+        <div class="w-meta-info">
+          <span class="w-meta-title">No. of Admins</span>
+        </div>
+
+        <div class="progressbar">
+          <div></div>
+        </div>
+
+      </div>
+    </div>
+    <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+      <div class="sub_iconic_lst yellow_txt_clr">
+        <a class="ico-block"><span><img src="../assets/images/Super-Admin-images/data_icon.png" alt=""/></span></a>
+        <div class="right_value_count">{{userCount}}</div>
+        <div class="w-meta-info">
+          <span class="w-meta-title">No. of Standard Users</span>
+        </div>
+
+        <div class="progressbar">
+          <div></div>
+        </div>
+
+      </div>
+    </div>
+    <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+      <div class="sub_iconic_lst blue_txt_clr">
+        <a class="ico-block"><span><img src="../assets/images/Super-Admin-images/data_icon.png" alt=""/></span></a>
+        <div class="right_value_count">{{CountList}}</div>
+        <div class="w-meta-info">
+          <span class="w-meta-title">No. of Templates</span>
+        </div>
+
+        <div class="progressbar">
+          <div></div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <!--sub_custom_table-->
+  <div class="sub_custom_table">
+    <!--column1-->
+    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+      <div class="table_list">
+
+        <h2 class="table_head_section">List Of organisation Admin</h2>
+
+
+        <div class="table-responsive">
+         
+          <table class="table" id="example">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Org. Admin Name</th>
+                <th>
+                  Org. Name
+                </th>
+               
+                <th class="text-center">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor=" let list1 of OrgAdminList |paginate: { itemsPerPage: 5, currentPage: p }  ; let i = index; ">
+                <td>{{i+1}}</td>
+                <td>{{list1.userName }}</td>
+                <td>{{list1.OrganizationId.organizationName }}</td>
+              
+                <td> <a style="border-radius:4px;" class='view_ico' (click)="onSelect(list1)">  <i aria-hidden="true" class="fa fa-pencil"></i>  </a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+        </div>
+      </div>
+      <pagination-controls (pageChange)="p = $event"></pagination-controls>
+      
+    </div>
+    <!--column1-->
+
+    <!--column1-->
+    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+      <div class="table_list">
+        <h2 class="table_head_section">List Of IT Admin</h2>
+        <div class="table-responsive">
+          <table class="table" id="example1">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>IT Admin Name</th>
+                <th>
+                    Org. Name
+                  </th>
+                <th class="text-center">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor=" let list1 of ITAdmin|paginate: { itemsPerPage: 5, currentPage: p } ; let i = index; ">
+                <td>{{i+1}}</td>
+                <td>{{list1.userName }}</td>
+                <td>{{list1.OrganizationId.organizationName }}</td>
+                <td> <a style="border-radius:4px;" class='view_ico' (click)="onSelect(list1)">   <i aria-hidden="true" class="fa fa-pencil"></i> </a>
+              </tr>
+            </tbody>
+          </table>
+
+        </div>
+      </div>
+      <pagination-controls (pageChange)="p = $event"></pagination-controls>
+      
+    </div>
+    <!--column1-->
+
+    
+  </div>
+  <app-super-admin-footer></app-super-admin-footer>
+</div>

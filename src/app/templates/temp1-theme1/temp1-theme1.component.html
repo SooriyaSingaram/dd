@@ -1,0 +1,1363 @@
+<script src="https://rawgit.com/eKoopmans/html2pdf/master/dist/html2pdf.bundle.min.js"></script>
+<app-dashboard-header></app-dashboard-header>
+<div id="wrapper">
+
+  <app-dashboard-sidebar></app-dashboard-sidebar>
+  <!-- <div class="preloader" *ngIf="showloader"><div class="preloader-img"> <img src="../../../assets/images/preloader.gif"></div></div>
+   -->
+  <div class="rgt_side col-md-10" *ngIf="homeMenu">
+    <div class="iconic_lst">
+      <div *ngFor="let widgets of widgetsResult">
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
+          <div class="dashbord_user">
+            <img src="../assets/images/user-images/3a.png">
+            <div class="right_value_count" style="text-align: center">
+              <h4>Total {{widgets.companyName}} Returns</h4>
+              <h4>Weight</h4>
+              <h3>{{widgets.Weight}}</h3>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div *ngFor="let widgets of widgetsResult">
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
+          <div class="dashbord_user second">
+            <img src="../assets/images/user-images/4a.png">
+            <div class="right_value_count" style="text-align: center">
+              <h4>Total {{widgets.companyName}} Returns</h4>
+              <h4> Quantity</h4>
+              <h3>{{widgets.Quantity}}</h3>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="sectionuser">
+        <div class="sub_custom_table">
+          <!--column1-->
+          <div class="row">
+
+            <div *ngFor="let returns of MarketShareTable">
+              <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                <div class="table_list bottom_space" style="height: 21em;">
+                  <h2 class="table_head_section">{{returns.ParentCompany}}</h2>
+                  <div class="table-responsive">
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th>Company Name</th>
+                          <th>
+                            Quantity
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor=" let detail of returns.CompanyList">
+                          <td>{{detail.CompanyName}}</td>
+                          <td>{{detail.Quantity}}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+  <div class="col-xs-12" *ngIf="templatePage" style="padding: 0;">
+
+    <div class="rgt_side col-md-12">
+      <div class="col-sm-offset-10 col-sm-2 export">
+        <div class="down_icon">
+          <span class="export" *ngIf="template.pageExport" (click)="pdfHtml('foo',template.customDashboardName)" tooltip="Download as PDF">
+            <img src="../../../assets/images/pdf.png" class="center-block" style="width:38px">
+          </span>
+
+          <span tooltip="Email as PDF" class="export noright" (click)="showPass('foo',template.dashboardName)">
+            <img src="../../../assets/images/envelope.png" style="width:38px;">
+          </span>
+        </div>
+      </div>
+      <h1> <input type=text class="form-controls head" [readonly]="read" name="desc" [(ngModel)]="template.dashboardName"> </h1>
+      <label class="desclabel">Description: </label><textarea  class="form-controls tempdesc" [readonly]="read" name="desc"
+        [(ngModel)]="template.templateDefinition"></textarea>
+      <div>
+
+        <div *ngIf="dateRange" class="col-xs-12 col-12 col-md-2 form-group">
+          <input type="text" placeholder="Start Date" class="form-control datepicker" [(ngModel)]="startDate" (ngModelChange)="ondateChange(startDate,false)"
+            bsDatepicker [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY'}">
+        </div>
+
+        <div *ngIf="dateRange" class="col-xs-12 col-12 col-md-2 form-group">
+          <input type="text" placeholder="End Date" class="form-control datepicker" [(ngModel)]="endDate" (ngModelChange)="ondateChange(startDate,endDate)"
+            bsDatepicker [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY'}">
+        </div>
+
+        <mat-form-field floatPlaceholder="never" *ngIf="period">
+          <mat-select name="periodfilter" placeholder="Select Period" [(ngModel)]="selectedValue2" (change)="onChangeMonth()" [multiple]="false">
+            <mat-option *ngFor="let dropdown of monthly" [value]="dropdown">
+              {{dropdown}}
+            </mat-option>
+            <mat-option value="nofilter">No Filter</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field floatPlaceholder="never" *ngIf="percentage">
+          <mat-select name="percentfilter" placeholder="Select Percentage" [(ngModel)]="percentvalue" (change)="onChangePercent()"
+            [multiple]="false">
+            <mat-option *ngFor="let dropdown of percent" [value]="dropdown">
+              {{dropdown}}
+            </mat-option>
+            <mat-option value="nofilter">No Filter</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <div *ngFor="let filterlist of dynamic_filters; let i =index; " class="div-default">
+          <!-- <p>{{dropdownfields[filterlist] | json}}</p> -->
+          <mat-form-field floatPlaceholder="never">
+
+            <mat-select name="filter_fields" placeholder={{filterlist}} [formControl]="dynamic_filter[i]" (change)="onChangePC($event.value,i)"
+              [multiple]="true">
+              <mat-option *ngFor="let dropdown of dropdownfields[filterlist]" [value]=dropdown>
+                {{dropdown}}
+              </mat-option>
+              <!-- <mat-option value="nofilter">No filter </mat-option>[formControl]="dynamic_filter[i]" -->
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+
+        <button class="reset btn btn-primary" (click)="applyFilters()">Reload</button>
+        <button tooltip="Reset" class="reset btn btn-primary" (click)="reset();">
+          <i class="fa fa-refresh"></i>Reset</button>
+      </div>
+      <div class="col-sm-12" id="foo" style="margin-top:20px;margin-bottom:20px;">
+
+        <!-- <div>
+              <div id="chartdiv" style="width:100%; height:10%;"></div>
+          </div> -->
+
+        <div class={{template.templateType}}>
+
+          <!-- <div class="no_data" *ngIf ="noPieData1">
+              <p>No Data Found</p>
+            </div> -->
+
+          <div class={{stackedlineposition1}} id="down_load" *ngIf="stackedline1">
+            <span class="export order arrow" (click)="sortOrderChange(-1)"><i class="fa fa-sort-down"></i>
+                  <span class="tooltiptext">Asc</span>
+            </span>
+            <span class="export order uparrow" (click)="sortOrderChange(1)"><i class="fa fa-sort-up"></i>
+              <span class="tooltiptext">Desc</span>
+            </span>
+            <div class="down_icon" *ngIf="hidefilter">
+              <span class="export" *ngIf="stackedlinepdf1" (click)="pdfHtml(stackedlineposition1,stacklineheading1)">
+                        <img src="../assets/images/pdf.png" style="width:32px">
+                        <span class="tooltiptext">Download as PDF</span>
+              </span>
+              <span class="export noright" *ngIf="stackedlinecsv1" (click)="download(stacklineheading1,stackLineData,stackLineLabels,'stacked')">
+                        <img src="../assets/images/xl.png" style="width:32px">
+                        <span class="tooltiptext">Download as CSV</span>
+              </span>
+              <span class="export noright" *ngIf="stackedlinemail1" (click)="showPass(stackedlineposition1,stacklineheading1)">
+                        <img src="../assets/images/envelope.png" style="width:32px;">
+                        <span class="tooltiptext">Email Graph</span>
+              </span>
+            </div>
+
+            <div class="engaged" id={{stackedlineposition1}} *ngIf="yesStackLineData1">
+              <input type=text class="form-controls chart-head" [readonly]="read" name="desc" [(ngModel)]="stacklineheading1">
+              <textarea class="form-controls" [readonly]="read" name="desc" [(ngModel)]="stacklinedesc1"></textarea>
+              <canvas baseChart height='350px' width='1200px' class="canvas-none" [datasets]="stackLineData" [labels]="stackLineLabels"
+              [colors]="colors"  [options]="stackLineOptions" [chartType]="stackLineType" (chartHover)="chartHovered($event)"></canvas>
+            </div>
+
+            <div class="no_data" *ngIf="noStackedLineData1">
+              <p>No Data Found</p>
+            </div>
+
+          </div>
+
+          <div class={{stackedlineposition2}} id="down_load" *ngIf="stackedline2">
+            <span class="export order arrow" (click)="sortOrderChange(-1)"><i class="fa fa-sort-down"></i>
+                <span class="tooltiptext">Asc</span>
+            </span>
+            <span class="export order uparrow" (click)="sortOrderChange(1)"><i class="fa fa-sort-up"></i>
+            <span class="tooltiptext">Desc</span>
+            </span>
+            <div class="down_icon" *ngIf="hidefilter">
+              <span class="export" *ngIf="stackedlinepdf2" (click)="pdfHtml(stackedlineposition2,stacklineheading2)">
+                          <img src="../assets/images/pdf.png" style="width:32px">
+                          <span class="tooltiptext">Download as PDF</span>
+              </span>
+              <span class="export noright" *ngIf="stackedlinecsv2" (click)="download(stacklineheading2,stackLineData2,stackLineLabels2,'stacked')">
+                          <img src="../assets/images/xl.png" style="width:32px">
+                          <span class="tooltiptext">Download as CSV</span>
+              </span>
+              <span class="export noright" *ngIf="stackedlinemail2" (click)="showPass(stackedlineposition2,stacklineheading2)">
+                          <img src="../assets/images/envelope.png" style="width:32px;">
+                          <span class="tooltiptext">Email Graph</span>
+              </span>
+            </div>
+            <div class="engaged" id={{stackedlineposition2}} *ngIf="yesStackLineData2">
+
+              <input type=text class="form-controls chart-head" [readonly]="read" name="desc" [(ngModel)]="stacklineheading2">
+              <textarea class="form-controls" [readonly]="read" name="desc" [(ngModel)]="stacklinedesc2">  </textarea>
+              <canvas baseChart height='350px' width='1200px' class="canvas-none" [datasets]="stackLineData2" [labels]="stackLineLabels2"
+              [colors]="colors"  [options]="stackLineOptions2" [chartType]="stackLineType" (chartHover)="chartHovered($event)"></canvas>
+            </div>
+            <div class="no_data" *ngIf="noStackedLineData2">
+              <p>No Data Found</p>
+            </div>
+
+          </div>
+
+          <div class={{stackedlineposition3}} id="down_load" *ngIf="stackedline3">
+            <span class="export order arrow" (click)="sortOrderChange(-1)"><i class="fa fa-sort-down"></i>
+                <span class="tooltiptext">Asc</span>
+            </span>
+            <span class="export order uparrow" (click)="sortOrderChange(1)"><i class="fa fa-sort-up"></i>
+            <span class="tooltiptext">Desc</span>
+            </span>
+            <div class="down_icon" *ngIf="hidefilter">
+              <span class="export" *ngIf="stackedlinepdf3" (click)="pdfHtml(stackedlineposition3,stacklineheading3)">
+                            <img src="../assets/images/pdf.png" style="width:32px">
+                            <span class="tooltiptext">Download as PDF</span>
+              </span>
+              <span class="export noright" *ngIf="stackedlinecsv3" (click)="download(stacklineheading3,stackLineData3,stackLineLabels3,'stacked')">
+                            <img src="../assets/images/xl.png" style="width:32px">
+                            <span class="tooltiptext">Download as CSV</span>
+              </span>
+              <span class="export noright" *ngIf="stackedlinemail3" (click)="showPass(stackedlineposition3,stacklineheading3)">
+                            <img src="../assets/images/envelope.png" style="width:32px;">
+                            <span class="tooltiptext">Email Graph</span>
+              </span>
+            </div>
+            <div class="engaged" id={{stackedlineposition3}} *ngIf="yesStackLineData3">
+
+              <input type=text class="form-controls chart-head" [readonly]="read" name="desc" [(ngModel)]="stacklineheading3">
+              <textarea class="form-controls" [readonly]="read" name="desc" [(ngModel)]="stacklinedesc3">  </textarea>
+              <canvas baseChart height='350px' width='1200px' class="canvas-none" [datasets]="stackLineData3" [labels]="stackLineLabels3"
+              [colors]="colors"  [options]="stackLineOptions3" [chartType]="stackLineType" (chartHover)="chartHovered($event)"></canvas>
+            </div>
+
+            <div class="no_data" *ngIf="noStackedLineData3">
+              <p>No Data Found</p>
+            </div>
+
+          </div>
+
+          <div class={{stackedlineposition4}} id="down_load" *ngIf="stackedline4">
+            <span class="export order arrow" (click)="sortOrderChange(-1)"><i class="fa fa-sort-down"></i>
+                <span class="tooltiptext">Asc</span>
+            </span>
+            <span class="export order uparrow" (click)="sortOrderChange(1)"><i class="fa fa-sort-up"></i>
+            <span class="tooltiptext">Desc</span>
+            </span>
+            <div class="down_icon" *ngIf="hidefilter">
+              <span class="export" *ngIf="stackedlinepdf4" (click)="pdfHtml(stackedlineposition4,stacklineheading4)">
+                              <img src="../assets/images/pdf.png" style="width:32px">
+                              <span class="tooltiptext">Download as PDF</span>
+              </span>
+              <span class="export noright" *ngIf="stackedlinecsv4" (click)="download(stacklineheading4,stackLineData4,stackLineLabels4,'stacked')">
+                              <img src="../assets/images/xl.png" style="width:32px">
+                              <span class="tooltiptext">Download as CSV</span>
+              </span>
+              <span class="export noright" *ngIf="stackedlinemail4" (click)="showPass(stackedlineposition4,stacklineheading4)">
+                              <img src="../assets/images/envelope.png" style="width:32px;">
+                              <span class="tooltiptext">Email Graph</span>
+              </span>
+            </div>
+            <div class="engaged" id={{stackedlineposition4}} *ngIf="yesStackLineData4">
+              <input type=text class="form-controls chart-head" [readonly]="read" name="desc" [(ngModel)]="stacklineheading4">
+              <textarea class="form-controls" [readonly]="read" name="desc" [(ngModel)]="stacklinedesc4"> </textarea>
+              <canvas baseChart height='350px' width='1200px' class="canvas-none" [datasets]="stackLineData4" [labels]="stackLineLabels4"
+              [colors]="colors"  [options]="stackLineOptions4" [chartType]="stackLineType" (chartHover)="chartHovered($event)"></canvas>
+            </div>
+
+            <div class="no_data" *ngIf="noStackedLineData4">
+              <p>No Data Found</p>
+            </div>
+
+          </div>
+
+          <div class={{stackedbarposition1}} id="down_load" *ngIf="stackedBar1">
+            <span class="export order  arrow" (click)="sortOrderChange(-1)"><i class="fa fa-sort-down"></i>
+                <span class="tooltiptext">Asc</span>
+            </span>
+            <span class="export order uparrow" (click)="sortOrderChange(1)"><i class="fa fa-sort-up"></i>
+            <span class="tooltiptext">Desc</span>
+            </span>
+
+            <div class="down_icon" *ngIf="hidefilter">
+              <span class="export" *ngIf="stackedbarpdf1" (click)="pdfHtml(stackedbarposition1,stackedbarchead1)">
+                    <img src="../assets/images/pdf.png" style="width:32px">
+                    <span class="tooltiptext">Download as PDF</span>
+              </span>
+              <span class="export noright" *ngIf="stackedbarcsv1" (click)="download(stackbarheading1,stackChartData,stackChartLabels,'stacked')">
+                    <img src="../assets/images/xl.png" style="width:32px">
+                    <span class="tooltiptext">Download as CSV</span>
+              </span>
+              <span class="export noright" *ngIf="stackedbarmail1" (click)="showPass(stackedbarposition1,stackbarheading1)">
+                    <img src="../assets/images/envelope.png" style="width:32px;">
+                    <span class="tooltiptext">Email Graph</span>
+              </span>
+            </div>
+            <div class="engaged" id={{stackedbarposition1}} *ngIf="yesStackChartData1">
+             
+
+              <input type=text class="form-controls chart-head" [readonly]="read" name="desc" [(ngModel)]="stackbarheading1">
+              <textarea class="form-controls" [readonly]="read" name="desc" [(ngModel)]="stackdesc1"></textarea>
+              <canvas baseChart height='350px' width='1200px' class="canvas-none" [datasets]="stackChartData" [labels]="stackChartLabels"
+                [colors]="colors" [options]="stackChartOptions" [chartType]="stackChartType" (chartHover)="chartHovered($event)"></canvas>
+            </div>
+
+            <div class="no_data" *ngIf="noStackChartData1">
+              <p>No Data Found</p>
+            </div>
+
+          </div>
+
+          <!-- second stack bar -->
+          <div class={{stackedbarposition2}} id="down_load" *ngIf="stackedBar2">
+            <span class="export order arrow" (click)="sortOrderChange(-1)"><i class="fa fa-sort-down"></i>
+                <span class="tooltiptext">Asc</span>
+            </span>
+            <span class="export order uparrow" (click)="sortOrderChange(1)"><i class="fa fa-sort-up"></i>
+            <span class="tooltiptext">Desc</span>
+            </span>
+            <div class="down_icon" *ngIf="hidefilter">
+              <span class="export" *ngIf="stackedbarpdf2" (click)="pdfHtml(stackedbarposition2,stackedbarchead2)">
+                      <img src="../assets/images/pdf.png" style="width:32px">
+                      <span class="tooltiptext">Download as PDF</span>
+              </span>
+              <span class="export noright" *ngIf="stackedbarcsv2" (click)="download(stackbarheading2,stackChartData2,stackChartLabels2,'stacked')">
+                      <img src="../assets/images/xl.png" style="width:32px">
+                      <span class="tooltiptext">Download as CSV</span>
+              </span>
+              <span class="export noright" *ngIf="stackedbarmail2" (click)="showPass(stackedbarposition2,stackbarheading2)">
+                      <img src="../assets/images/envelope.png" style="width:32px;">
+                      <span class="tooltiptext">Email Graph</span>
+              </span>
+            </div>
+            <div class="engaged" id={{stackedbarposition2}} *ngIf="yesStackChartData2">
+              <input type=text class="form-controls chart-head" [readonly]="read" name="desc" [(ngModel)]="stackbarheading2">
+              <textarea class="form-controls" [readonly]="read" name="desc" [(ngModel)]="stackdesc2"></textarea>
+              <canvas baseChart height='350px' width='1200px' class="canvas-none" [datasets]="stackChartData2" [labels]="stackChartLabels2"
+                [colors]="colors" [options]="stackChartOptions2" [chartType]="stackChartType" (chartHover)="chartHovered($event)"></canvas>
+            </div>
+
+            <div class="no_data" *ngIf="noStackChartData2">
+              <p>No Data Found</p>
+            </div>
+          </div>
+
+          <!-- Third Stacked Bar -->
+          <div class={{stackedbarposition3}} id="down_load" *ngIf="stackedBar3">
+            <span class="export order arrow" (click)="sortOrderChange(-1)"><i class="fa fa-sort-down"></i>
+                <span class="tooltiptext">Asc</span>
+            </span>
+            <span class="export order uparrow" (click)="sortOrderChange(1)"><i class="fa fa-sort-up"></i>
+            <span class="tooltiptext">Desc</span>
+            </span>
+            <div class="down_icon" *ngIf="hidefilter">
+              <span class="export" *ngIf="stackedbarpdf3" (click)="pdfHtml(stackedbarposition3,stackedbarchead3)">
+                        <img src="../assets/images/pdf.png" style="width:32px">
+                        <span class="tooltiptext">Download as PDF</span>
+              </span>
+              <span class="export noright" *ngIf="stackedbarcsv3" (click)="download(stackbarheading3,stackChartData3,stackChartLabels3,'stacked')">
+                        <img src="../assets/images/xl.png" style="width:32px">
+                        <span class="tooltiptext">Download as CSV</span>
+              </span>
+              <span class="export noright" *ngIf="stackedbarmail3" (click)="showPass(stackedbarposition3,stackbarheading3)">
+                        <img src="../assets/images/envelope.png" style="width:32px;">
+                        <span class="tooltiptext">Email Graph</span>
+              </span>
+            </div>
+            <div class="engaged" id={{stackedbarposition3}} *ngIf="yesStackChartData3">
+              <input type=text class="form-controls chart-head" [readonly]="read" name="desc" [(ngModel)]="stackbarheading3">
+              <textarea class="form-controls" [readonly]="read" name="desc" [(ngModel)]="stackdesc3"></textarea>
+              <canvas baseChart height='350px' width='1200px' class="canvas-none" [datasets]="stackChartData3" [labels]="stackChartLabels3"
+                [colors]="colors" [options]="stackChartOptions3" [chartType]="stackChartType" (chartHover)="chartHovered($event)"></canvas>
+            </div>
+
+            <div class="no_data" *ngIf="noStackChartData3">
+              <p>No Data Found</p>
+            </div>
+          </div>
+
+          <!-- Fourth Stacked Bar -->
+          <div class={{stackedbarposition4}} id="down_load" *ngIf="stackedBar4">
+            <span class="export order arrow" (click)="sortOrderChange(-1)"><i class="fa fa-sort-down"></i>
+                <span class="tooltiptext">Asc</span>
+            </span>
+            <span class="export order uparrow" (click)="sortOrderChange(1)"><i class="fa fa-sort-up"></i>
+            <span class="tooltiptext">Desc</span>
+            </span>
+            <div class="down_icon" *ngIf="hidefilter">
+              <span class="export" *ngIf="stackedbarpdf4" (click)="pdfHtml(stackedbarposition4,stackedbarchead4)">
+                          <img src="../assets/images/pdf.png" style="width:32px">
+                          <span class="tooltiptext">Download as PDF</span>
+              </span>
+              <span class="export noright" *ngIf="stackedbarcsv4" (click)="download(stackbarheading4,stackChartData4,stackChartLabels4,'stacked')">
+                          <img src="../assets/images/xl.png" style="width:32px">
+                          <span class="tooltiptext">Download as CSV</span>
+              </span>
+              <span class="export noright" *ngIf="stackedbarmail4" (click)="showPass(stackedbarposition4,stackbarheading4)">
+                          <img src="../assets/images/envelope.png" style="width:32px;">
+                          <span class="tooltiptext">Email Graph</span>
+              </span>
+            </div>
+            <div class="engaged" id={{stackedbarposition4}} *ngIf="yesStackChartData4">
+              <input type=text class="form-controls chart-head" [readonly]="read" name="desc" [(ngModel)]="stackbarheading4">
+              <textarea class="form-controls" [readonly]="read" name="desc" [(ngModel)]="stackdesc4"></textarea>
+              <canvas baseChart height='350px' width='1200px' class="canvas-none" [datasets]="stackChartData4" [labels]="stackChartLabels4"
+                [colors]="colors" [options]="stackChartOptions4" [chartType]="stackChartType" (chartHover)="chartHovered($event)"></canvas>
+            </div>
+
+            <div class="no_data" *ngIf="noStackChartData4">
+              <p>No Data Found</p>
+            </div>
+          </div>
+          <!-- First Linearea Load -->
+          <div class={{lineareaposition1}} id="down_load" *ngIf="lineAreaChart1">
+            <span class="export order arrow" (click)="sortOrderChange(-1)"><i class="fa fa-sort-down"></i>
+                <span class="tooltiptext">Asc</span>
+            </span>
+            <span class="export order uparrow" (click)="sortOrderChange(1)"><i class="fa fa-sort-up"></i>
+            <span class="tooltiptext">Desc</span>
+            </span>
+            <div class="down_icon" *ngIf="hidefilter">
+              <span class="export" *ngIf="lineareapdf1" (click)="pdfHtml(lineareaposition1,lineareachead1)">
+                <img src="../assets/images/pdf.png" style="width:32px">
+                <span class="tooltiptext">Download as PDF</span>
+              </span>
+              <span class="export noright" *ngIf="lineareacsv1" (click)="download(lineareaheading1,lineAreaChartData1,lineAreaChartLabels1)">
+                <img src="../assets/images/xl.png" style="width:32px">
+                <span class="tooltiptext">Download as CSV</span>
+              </span>
+              <span class="export noright" *ngIf="lineareamail1" (click)="showPass(lineareaposition1,lineareaheading1)">
+                <img src="../assets/images/envelope.png" style="width:32px; ">
+                <span class="tooltiptext">Email Graph</span>
+              </span>
+            </div>
+            <div class="engaged" id={{lineareaposition1}} *ngIf="yesLineAreaData1">
+              <input type=text class="form-controls chart-head" [readonly]="read" name="desc" [(ngModel)]="lineareaheading1">
+              <textarea class="form-controls" [readonly]="read" name="desc" [(ngModel)]="linedesc1"></textarea>
+              <canvas baseChart height='350px' width='1200px' [datasets]="lineAreaChartData1" [labels]="lineAreaChartLabels1" [options]="lineAreaChartOptions"
+                [colors]="lineAreaChartColors" [legend]="lineAreaChartLegend" [chartType]="'line'"></canvas>
+            </div>
+
+            <div class="no_data" *ngIf="noLineAreaData1">
+              <p>No Data Found</p>
+            </div>
+          </div>
+          <!-- First Linearea Load End -->
+          <!-- second Linearea Load -->
+          <div class={{lineareaposition2}} id="down_load" *ngIf="lineAreaChart2">
+            <span class="export order arrow" (click)="sortOrderChange(-1)"><i class="fa fa-sort-down"></i>
+                <span class="tooltiptext">Asc</span>
+            </span>
+            <span class="export order uparrow" (click)="sortOrderChange(1)"><i class="fa fa-sort-up"></i>
+            <span class="tooltiptext">Desc</span>
+            </span>
+            <div class="down_icon" *ngIf="hidefilter">
+              <span class="export" *ngIf="lineareapdf2" (click)="pdfHtml(lineareaposition2,lineareachead2)">
+                <img src="../assets/images/pdf.png" style="width:32px">
+                <span class="tooltiptext">Download as PDF</span>
+              </span>
+              <span class="export noright" *ngIf="lineareacsv2" (click)="download(lineareaheading2,lineAreaChartData2,lineAreaChartLabels2)">
+                <img src="../assets/images/xl.png" style="width:32px">
+                <span class="tooltiptext">Download as CSV</span>
+              </span>
+              <span class="export noright" *ngIf="lineareamail2" (click)="showPass(lineareaposition2,lineareaheading2)">
+                <img src="../assets/images/envelope.png" style="width:32px; ">
+                <span class="tooltiptext">Email Graph</span>
+              </span>
+            </div>
+            <div class="engaged" id={{lineareaposition2}} *ngIf="noLineAreaData2">
+              <input type=text class="form-controls chart-head" [readonly]="read" name="desc" [(ngModel)]="lineareaheading2">
+              <textarea class="form-controls" [readonly]="read" name="desc" [(ngModel)]="linedesc2"></textarea>
+              <canvas baseChart height='350px' width='1200px' [datasets]="lineAreaChartData2" [labels]="lineAreaChartLabels2" [options]="lineAreaChartOptions2"
+                [colors]="lineAreaChartColors" [legend]="lineAreaChartLegend" [chartType]="'line'" (chartHover)="chartHovered($event)"
+                (chartClick)="chartClicked($event)"></canvas>
+            </div>
+
+            <div class="no_data" *ngIf="noLineAreaData2">
+              <p>No Data Found</p>
+            </div>
+          </div>
+          <!-- second Linearea Load End-->
+          <!-- Third Linearea Load -->
+          <div class={{lineareaposition3}} id="down_load" *ngIf="lineAreaChart3">
+            <span class="export order arrow" (click)="sortOrderChange(-1)"><i class="fa fa-sort-down"></i>
+                <span class="tooltiptext">Asc</span>
+            </span>
+            <span class="export order uparrow" (click)="sortOrderChange(1)"><i class="fa fa-sort-up"></i>
+            <span class="tooltiptext">Desc</span>
+            </span>
+            <div class="down_icon" *ngIf="hidefilter">
+              <span class="export" *ngIf="lineareapdf3" (click)="pdfHtml(lineareaposition3,lineareachead3)">
+                <img src="../assets/images/pdf.png" style="width:32px">
+                <span class="tooltiptext">Download as PDF</span>
+              </span>
+              <span class="export noright" *ngIf="lineareacsv3" (click)="download(lineareaheading3,lineAreaChartData3,lineAreaChartLabels3)">
+                <img src="../assets/images/xl.png" style="width:32px">
+                <span class="tooltiptext">Download as CSV</span>
+              </span>
+              <span class="export noright" *ngIf="lineareamail3" (click)="showPass(lineareaposition3,lineareaheading3)">
+                <img src="../assets/images/envelope.png" style="width:32px;">
+                <span class="tooltiptext">Email Graph</span>
+              </span>
+            </div>
+            <div class="engaged" id={{lineareaposition3}} *ngIf="noLineAreaData3">
+              <input type=text class="form-controls chart-head" [readonly]="read" name="desc" [(ngModel)]="lineareaheading3">
+              <textarea class="form-controls" [readonly]="read" name="desc" [(ngModel)]="linedesc3"></textarea>
+              <canvas baseChart height='350px' width='1200px' [datasets]="lineAreaChartData3" [labels]="lineAreaChartLabels3" [options]="lineAreaChartOptions3"
+                [colors]="lineAreaChartColors" [legend]="lineAreaChartLegend" [chartType]="'line'" (chartHover)="chartHovered($event)"
+                (chartClick)="chartClicked($event)"></canvas>
+            </div>
+
+            <div class="no_data" *ngIf="noLineAreaData3">
+              <p>No Data Found</p>
+            </div>
+          </div>
+          <!-- Third Linearea Load End-->
+          <!-- Four Linearea Load -->
+          <div class={{lineareaposition4}} id="down_load" *ngIf="lineAreaChart4">
+            <span class="export order arrow" (click)="sortOrderChange(-1)"><i class="fa fa-sort-down"></i>
+                <span class="tooltiptext">Asc</span>
+            </span>
+            <span class="export order uparrow" (click)="sortOrderChange(1)"><i class="fa fa-sort-up"></i>
+            <span class="tooltiptext">Desc</span>
+            </span>
+            <div class="down_icon" *ngIf="hidefilter">
+              <span class="export" *ngIf="lineareapdf4" (click)="pdfHtml(lineareaposition4,lineareachead4)">
+                <img src="../assets/images/pdf.png" style="width:32px">
+                <span class="tooltiptext">Download as PDF</span>
+              </span>
+              <span class="export noright" *ngIf="lineareacsv4" (click)="download(lineareaheading4,lineAreaChartData4,lineAreaChartLabels4)">
+                <img src="../assets/images/xl.png" style="width:32px">
+                <span class="tooltiptext">Download as CSV</span>
+              </span>
+              <span class="export noright" *ngIf="lineareamail4" (click)="showPass(lineareaposition4,lineareaheading4)">
+                <img src="../assets/images/envelope.png" style="width:32px;">
+                <span class="tooltiptext">Email Graph</span>
+              </span>
+            </div>
+            <div class="engaged" id={{lineareaposition4}} *ngIf="noLineAreaData4">
+              <input type=text class="form-controls chart-head" [readonly]="read" name="desc" [(ngModel)]="lineareaheading4">
+              <textarea class="form-controls" [readonly]="read" name="desc" [(ngModel)]="linedesc4"></textarea>
+              <canvas baseChart height='350px' width='1200px' [datasets]="lineAreaChartData4" [labels]="lineAreaChartLabels4" [options]="lineAreaChartOptions4"
+                [colors]="lineAreaChartColors" [legend]="lineAreaChartLegend" [chartType]="'line'" (chartHover)="chartHovered($event)"
+                (chartClick)="chartClicked($event)"></canvas>
+            </div>
+
+            <div class="no_data" *ngIf="noLineAreaData4">
+              <p>No Data Found</p>
+            </div>
+          </div>
+          <!-- Four Linearea Load End-->
+
+          <!-- First Line Chart -->
+          <div class={{lineposition1}} id="down_load" *ngIf="lineChart1">
+            <span class="export order arrow" (click)="sortOrderChange(-1)"><i class="fa fa-sort-down"></i>
+                <span class="tooltiptext">Asc</span>
+            </span>
+            <span class="export order uparrow" (click)="sortOrderChange(1)"><i class="fa fa-sort-up"></i>
+            <span class="tooltiptext">Desc</span>
+            </span>
+            <div class="down_icon" *ngIf="hidefilter">
+              <span class="export" *ngIf="linepdf" (click)="pdfHtml(lineposition1,llinechead1)">
+                <img src="../assets/images/pdf.png" style="width:32px">
+                <span class="tooltiptext">Download as PDF</span>
+              </span>
+              <span class="export noright" *ngIf="linecsv" (click)="download(lineheading1,lineChartData1,lineChartLabels1)">
+                <img src="../assets/images/xl.png" style="width:32px">
+                <span class="tooltiptext">Download as CSV</span>
+              </span>
+              <span class="export noright" *ngIf="linemail" (click)="showPass(lineposition,lineheading1)">
+                <img src="../assets/images/envelope.png" style="width:32px;">
+                <span class="tooltiptext">Email Graph</span>
+              </span>
+            </div>
+            <div class="engaged" id={{lineposition1}} *ngIf="yesLineData1">
+              <input type=text class="form-controls chart-head" [readonly]="read" name="desc" [(ngModel)]="lineheading1">
+              <textarea class="form-controls" [readonly]="read" name="desc" [(ngModel)]="linechartdesc1"></textarea>
+              <canvas baseChart height='350px' width='1200px' [datasets]="lineChartData1" [labels]="lineChartLabels1" [options]="lineChartOptions"
+                [colors]="lineChartColors" [legend]="lineChartLegend" [chartType]="'line'" (chartHover)="chartHovered($event)"></canvas>
+            </div>
+
+            <div class="no_data" *ngIf="noLineData1">
+              <p>No Data Found</p>
+            </div>
+          </div>
+
+          <!-- First Line Chart End -->
+
+          <!-- Second Line Chart  -->
+          <div class={{lineposition2}} id="down_load" *ngIf="lineChart2">
+            <span class="export order arrow" (click)="sortOrderChange(-1)"><i class="fa fa-sort-down"></i>
+                <span class="tooltiptext">Asc</span>
+            </span>
+            <span class="export order uparrow" (click)="sortOrderChange(1)"><i class="fa fa-sort-up"></i>
+            <span class="tooltiptext">Desc</span>
+            </span>
+            <div class="down_icon" *ngIf="hidefilter">
+              <span class="export" *ngIf="linepdf" (click)="pdfHtml(lineposition2,linechead2)">
+                <img src="../assets/images/pdf.png" style="width:32px">
+                <span class="tooltiptext">Download as PDF</span>
+              </span>
+              <span class="export noright" *ngIf="linecsv" (click)="download(lineheading2,lineChartData2,lineChartLabels2)">
+                <img src="../assets/images/xl.png" style="width:32px">
+                <span class="tooltiptext">Download as CSV</span>
+              </span>
+              <span class="export noright" *ngIf="linemail" (click)="showPass(lineposition,lineheading2)">
+                <img src="../assets/images/envelope.png" style="width:32px;">
+                <span class="tooltiptext">Email Graph</span>
+              </span>
+            </div>
+            <div class="engaged" id={{lineposition2}} *ngIf="yesLineData2">
+              <input type=text class="form-controls chart-head" [readonly]="read" name="desc" [(ngModel)]="lineheading2">
+              <textarea class="form-controls" [readonly]="read" name="desc" [(ngModel)]="linechartdesc2">    </textarea>
+              <canvas baseChart height='350px' width='1200px' [datasets]="lineChartData2" [labels]="lineChartLabels2" [options]="lineChartOptions2"
+                [colors]="lineChartColors" [legend]="lineChartLegend" [chartType]="'line'" (chartHover)="chartHovered($event)"></canvas>
+            </div>
+
+            <div class="no_data" *ngIf="noLineData2">
+              <p>No Data Found</p>
+            </div>
+          </div>
+          <!-- Second Line Chart End -->
+          <!-- Third Line Chart -->
+          <div class={{lineposition3}} id="down_load" *ngIf="lineChart3">
+            <span class="export order arrow" (click)="sortOrderChange(-1)"><i class="fa fa-sort-down"></i>
+                <span class="tooltiptext">Asc</span>
+            </span>
+            <span class="export order uparrow" (click)="sortOrderChange(1)"><i class="fa fa-sort-up"></i>
+            <span class="tooltiptext">Desc</span>
+            </span>
+            <div class="down_icon" *ngIf="hidefilter">
+              <span class="export" *ngIf="linepdf" (click)="pdfHtml(lineposition3,linechead3)">
+                <img src="../assets/images/pdf.png" style="width:32px">
+                <span class="tooltiptext">Download as PDF</span>
+              </span>
+              <span class="export noright" *ngIf="linecsv" (click)="download(lineheading3,lineChartData3,lineChartLabels3)">
+                <img src="../assets/images/xl.png" style="width:32px">
+                <span class="tooltiptext">Download as CSV</span>
+              </span>
+              <span class="export noright" *ngIf="linemail" (click)="showPass(lineposition,lineheading3)">
+                <img src="../assets/images/envelope.png" style="width:32px; ">
+                <span class="tooltiptext">Email Graph</span>
+              </span>
+            </div>
+            <div class="engaged" id={{lineposition3}} *ngIf="yesLineData3">
+              <input type=text class="form-controls chart-head" [readonly]="read" name="desc" [(ngModel)]="lineheading3">
+              <textarea class="form-controls" [readonly]="read" name="desc" [(ngModel)]="linechartdesc3">   </textarea>
+              <canvas baseChart height='350px' width='1200px' [datasets]="lineChartData3" [labels]="lineChartLabels3" [options]="lineChartOptions3"
+                [colors]="lineChartColors" [legend]="lineChartLegend" [chartType]="'line'" (chartHover)="chartHovered($event)"></canvas>
+            </div>
+
+            <div class="no_data" *ngIf="noLineData3">
+              <p>No Data Found</p>
+            </div>
+          </div>
+          <!-- Third Line Chart End -->
+          <!-- Fourth Line Chart  -->
+          <div class={{lineposition4}} id="down_load" *ngIf="lineChart4">
+            <span class="export order arrow" (click)="sortOrderChange(-1)"><i class="fa fa-sort-down"></i>
+                <span class="tooltiptext">Asc</span>
+            </span>
+            <span class="export order uparrow" (click)="sortOrderChange(1)"><i class="fa fa-sort-up"></i>
+            <span class="tooltiptext">Desc</span>
+            </span>
+            <div class="down_icon" *ngIf="hidefilter">
+              <span class="export" *ngIf="linepdf" (click)="pdfHtml(lineposition4,linechead4)">
+                <img src="../assets/images/pdf.png" style="width:32px">
+                <span class="tooltiptext">Download as PDF</span>
+              </span>
+              <span class="export noright" *ngIf="linecsv" (click)="download(lineheading4,lineChartData4,lineChartLabels4)">
+                <img src="../assets/images/xl.png" style="width:32px">
+                <span class="tooltiptext">Download as CSV</span>
+              </span>
+              <span class="export noright" *ngIf="linemail" (click)="showPass(lineposition,lineheading4)">
+                <img src="../assets/images/envelope.png" style="width:32px;">
+                <span class="tooltiptext">Email Graph</span>
+              </span>
+            </div>
+            <div class="engaged" id={{lineposition4}} *ngIf="yesLineData4">
+              <input type=text class="form-controls chart-head" [readonly]="read" name="desc" [(ngModel)]="lineheading4">
+              <textarea class="form-controls" [readonly]="read" name="desc" [(ngModel)]="linechartdesc4"></textarea>
+              <canvas baseChart height='350px' width='1200px' [datasets]="lineChartData4" [labels]="lineChartLabels4" [options]="lineChartOptions4"
+                [colors]="lineChartColors" [legend]="lineChartLegend" [chartType]="'line'" (chartHover)="chartHovered($event)"></canvas>
+            </div>
+
+            <div class="no_data" *ngIf="noLineData4">
+              <p>No Data Found</p>
+            </div>
+          </div>
+          <!-- Fourth Line Chart End -->
+
+          <!-- First Pie Chart  -->
+          <div class={{pieposition1}} id="down_load" *ngIf="pieChart1">
+            <div class="down_icon" *ngIf="hidefilter">
+
+              <span class="export" *ngIf="piechartpdf1" (click)="pdfHtml(pieposition1,piechartchead1)">
+                <img src="../assets/images/pdf.png" style="width:32px">
+                <span class="tooltiptext">Download as PDF</span>
+              </span>
+              <span class="export noright" *ngIf="piechartcsv1" (click)="download(pieheading1,pieChartData1,pieChartLabels1)">
+                <img src="../assets/images/xl.png" style="width:32px">
+                <span class="tooltiptext">Download as CSV</span>
+              </span>
+              <span class="export noright" *ngIf="piemail1" (click)="showPass(pieposition1,pieheading1)">
+                <img src="../assets/images/envelope.png" style="width:32px;">
+                <span class="tooltiptext">Email Graph</span>
+              </span>
+            </div>
+            <div class="engaged" id={{pieposition1}} *ngIf="yesPieData1">
+              <input type=text class="form-controls chart-head" [readonly]="read" name="desc" [(ngModel)]="pieheading1">
+              <textarea class="form-controls" [readonly]="read" name="desc" [(ngModel)]="piedesc1"></textarea>
+              <canvas baseChart height='350px' width='1200px' [datasets]="pieChartData1" [labels]="pieChartLabels1" [legend]="pieChartLegend"
+                [chartType]="'pie'" [colors]="pieChartColor" [options]="pieChartOptions" (chartHover)="pieChartHovered(piedesc1)"></canvas>
+            </div>
+
+
+          </div>
+          <!-- First Pie Chart End -->
+          <!-- Second Pie Chart -->
+          <div class={{pieposition2}} id="down_load" *ngIf="pieChart2">
+            <div class="down_icon" *ngIf="hidefilter">
+
+              <span class="export" *ngIf="piechartpdf2" (click)="pdfHtml(pieposition2,piechartchead2)">
+                <img src="../assets/images/pdf.png" style="width:32px">
+                <span class="tooltiptext">Download as PDF</span>
+              </span>
+              <span class="export noright" *ngIf="piechartcsv2" (click)="download(pieheading2,pieChartData2,pieChartLabels2)">
+                <img src="../assets/images/xl.png" style="width:32px">
+                <span class="tooltiptext">Download as CSV</span>
+              </span>
+              <span class="export noright" *ngIf="piemail2" (click)="showPass(pieposition2,pieheading2)">
+                <img src="../assets/images/envelope.png" style="width:32px;">
+                <span class="tooltiptext">Email Graph</span>
+              </span>
+            </div>
+            <div class="engaged" id={{pieposition2}} *ngIf="yesPieData2">
+              <input type=text class="form-controls chart-head" [readonly]="read" name="desc" [(ngModel)]="pieheading2">
+              <textarea class="form-controls" [readonly]="read" name="desc" [(ngModel)]="piedesc2"></textarea>
+              <canvas baseChart height='350px' width='1200px' [datasets]="pieChartData2" [labels]="pieChartLabels2" [legend]="pieChartLegend"
+                [chartType]="'pie'" [colors]="pieChartColor" [options]="pieChartOptions" (chartHover)="chartHovered($event)"></canvas>
+            </div>
+
+            <div class="no_data" *ngIf="noPieData2">
+              <p>No Data Found</p>
+            </div>
+          </div>
+          <!-- Second Pie Chart End -->
+          <!-- Third Pie Chart -->
+          <div class={{pieposition3}} id="down_load" *ngIf="pieChart3">
+            <div class="down_icon" *ngIf="hidefilter">
+
+              <span class="export" *ngIf="piechartpdf3" (click)="pdfHtml(pieposition3,piechartchead3)">
+                <img src="../assets/images/pdf.png" style="width:32px">
+                <span class="tooltiptext">Download as PDF</span>
+              </span>
+              <span class="export noright" *ngIf="piechartcsv3" (click)="download(pieheading3,pieChartData3,pieChartLabels3)">
+                <img src="../assets/images/xl.png" style="width:32px">
+                <span class="tooltiptext">Download as CSV</span>
+              </span>
+              <span class="export noright" *ngIf="piemail3" (click)="showPass(pieposition3,pieheading3)">
+                <img src="../assets/images/envelope.png" style="width:32px; ">
+                <span class="tooltiptext">Email Graph</span>
+              </span>
+            </div>
+            <div class="engaged" id={{pieposition3}} *ngIf="yesPieData3">
+              <input type=text class="form-controls chart-head" [readonly]="read" name="desc" [(ngModel)]="pieheading3">
+              <textarea class="form-controls" [readonly]="read" name="desc" [(ngModel)]="piedesc3"></textarea>
+              <canvas baseChart height='350px' width='1200px' [datasets]="pieChartData3" [labels]="pieChartLabels3" [legend]="pieChartLegend"
+                [chartType]="'pie'" [colors]="pieChartColor" [options]="pieChartOptions" (chartHover)="chartHovered($event)"></canvas>
+            </div>
+
+            <div class="no_data" *ngIf="noPieData3">
+              <p>No Data Found</p>
+            </div>
+          </div>
+          <!-- Third Pie Chart End -->
+          <!-- Fourth Pie Chart -->
+          <div class={{pieposition4}} id="down_load" *ngIf="pieChart4">
+            <div class="down_icon" *ngIf="hidefilter">
+
+              <span class="export" *ngIf="piechartpdf4" (click)="pdfHtml(pieposition4,piechartchead4)">
+                <img src="../assets/images/pdf.png" style="width:32px">
+                <span class="tooltiptext">Download as PDF</span>
+              </span>
+              <span class="export noright" *ngIf="piechartcsv4" (click)="download(pieheading4,pieChartData4,pieChartLabels4)">
+                <img src="../assets/images/xl.png" style="width:32px">
+                <span class="tooltiptext">Download as CSV</span>
+              </span>
+              <span class="export noright" *ngIf="piemail4" (click)="showPass(pieposition4,pieheading4)">
+                <img src="../assets/images/envelope.png" style="width:32px;">
+                <span class="tooltiptext">Email Graph</span>
+              </span>
+            </div>
+            <div class="engaged" id={{pieposition4}} *ngIf="yesPieData4">
+              <input type=text class="form-controls chart-head" [readonly]="read" name="desc" [(ngModel)]="pieheading4">
+              <textarea class="form-controls" [readonly]="read" name="desc" [(ngModel)]="piedesc4"></textarea>
+              <canvas baseChart height='350px' width='1200px' [datasets]="pieChartData4" [labels]="pieChartLabels4" [legend]="pieChartLegend"
+                [chartType]="'pie'" [colors]="pieChartColor" [options]="pieChartOptions" (chartHover)="chartHovered($event)"></canvas>
+            </div>
+
+            <div class="no_data" *ngIf="noPieData4">
+              <p>No Data Found</p>
+            </div>
+          </div>
+          <!-- Fourth Pie Chart End -->
+
+          <div class={{barposition1}} id="down_load" *ngIf="barChart1">
+            <span class="export order arrow" (click)="sortOrderChange(-1)"><i class="fa fa-sort-down"></i>
+                <span class="tooltiptext">Asc</span>
+            </span>
+            <span class="export order uparrow" (click)="sortOrderChange(1)"><i class="fa fa-sort-up"></i>
+            <span class="tooltiptext">Desc</span>
+            </span>
+            <div class="down_icon" *ngIf="hidefilter">
+              <span class="export" *ngIf="barpdf1" (click)="pdfHtml(barposition1,barchead1)">
+                <img src="../assets/images/pdf.png" style="width:32px">
+                <span class="tooltiptext">Download as PDF</span>
+              </span>
+              <span class="export noright" *ngIf="barcsv1" (click)="download(barheading1,barChartData1,barChartLabels1)">
+                <img src="../assets/images/xl.png" style="width:32px">
+                <span class="tooltiptext">Download as CSV</span>
+              </span>
+              <span class="export noright" *ngIf="barmail1" (click)="showPass(barposition1,barheading1)">
+                <img src="../assets/images/envelope.png" style="width:32px;">
+                <span class="tooltiptext">Email Graph</span>
+              </span>
+            </div>
+            <div class="engaged" id={{barposition1}} *ngIf="yesBarData1">
+              <input type=text class="form-controls chart-head" [readonly]="read" name="desc" [(ngModel)]="barheading1">
+              <textarea class="form-controls" [readonly]="read" name="desc" [(ngModel)]="bardesc1"></textarea>
+              <canvas baseChart height='350px' width='1200px' [datasets]="barChartData1" [labels]="barChartLabels1" [options]="barChartOptions"
+                [legend]="barChartLegend" [chartType]="'bar'" [colors]="barChartColor" (chartHover)="chartHovered($event)"
+                class="canvas-none"></canvas>
+            </div>
+
+            <div class="no_data" *ngIf="noBarData1">
+              <p>No Data Found</p>
+            </div>
+          </div>
+
+          <div class={{barposition2}} id="down_load" *ngIf="barChart2">
+            <span class="export order arrow" (click)="sortOrderChange(-1)"><i class="fa fa-sort-down"></i>
+                <span class="tooltiptext">Asc</span>
+            </span>
+            <span class="export order uparrow" (click)="sortOrderChange(1)"><i class="fa fa-sort-up"></i>
+            <span class="tooltiptext">Desc</span>
+            </span>
+            <div class="down_icon" *ngIf="hidefilter">
+              <span class="export" *ngIf="barpdf2" (click)="pdfHtml(barposition2,barchead2)">
+                <img src="../assets/images/pdf.png" style="width:32px">
+                <span class="tooltiptext">Download as PDF</span>
+              </span>
+              <span class="export noright" *ngIf="barcsv2" (click)="download(barheading2,barChartData2,barChartLabels2)">
+                <img src="../assets/images/xl.png" style="width:32px">
+                <span class="tooltiptext">Download as CSV</span>
+              </span>
+              <span class="export noright" *ngIf="barmail2" (click)="showPass(barposition2,barheading2)">
+                <img src="../assets/images/envelope.png" style="width:32px;">
+                <span class="tooltiptext">Email Graph</span>
+              </span>
+            </div>
+            <div class="engaged" id={{barposition2}} *ngIf="yesBarData2">
+              <input type=text class="form-controls chart-head" [readonly]="read" name="desc" [(ngModel)]="barheading2">
+              <textarea class="form-controls" [readonly]="read" name="desc" [(ngModel)]="bardesc2"></textarea>
+              <canvas baseChart height='350px' width='1200px' [datasets]="barChartData2" [labels]="barChartLabels2" [options]="barChartOptions2"
+                [legend]="barChartLegend" [chartType]="'bar'" [colors]="barChartColor" (chartHover)="chartHovered($event)"
+                class="canvas-none"></canvas>
+            </div>
+
+            <div class="no_data" *ngIf="noBarData2">
+              <p>No Data Found</p>
+            </div>
+          </div>
+
+
+          <div class={{barposition3}} id="down_load" *ngIf="barChart3">
+            <span class="export order arrow" (click)="sortOrderChange(-1)"><i class="fa fa-sort-down"></i>
+                <span class="tooltiptext">Asc</span>
+            </span>
+            <span class="export order uparrow" (click)="sortOrderChange(1)"><i class="fa fa-sort-up"></i>
+            <span class="tooltiptext">Desc</span>
+            </span>
+            <div class="down_icon" *ngIf="hidefilter">
+              <span class="export" *ngIf="barpdf3" (click)="pdfHtml(barposition3,barchead3)">
+                <img src="../assets/images/pdf.png" style="width:32px">
+                <span class="tooltiptext">Download as PDF</span>
+              </span>
+              <span class="export noright" *ngIf="barcsv3" (click)="download(barheading3,barChartData3,barChartLabels3)">
+                <img src="../assets/images/xl.png" style="width:32px">
+                <span class="tooltiptext">Download as CSV</span>
+              </span>
+              <span class="export noright" *ngIf="barmail3" (click)="showPass(barposition3,barheading3)">
+                <img src="../assets/images/envelope.png" style="width:32px;">
+                <span class="tooltiptext">Email Graph</span>
+              </span>
+            </div>
+            <div class="engaged" id={{barposition3}} *ngIf="yesBarData3">
+              <input type=text class="form-controls chart-head" [readonly]="read" name="desc" [(ngModel)]="barheading3">
+              <textarea class="form-controls" [readonly]="read" name="desc" [(ngModel)]="bardesc3"></textarea>
+              <canvas baseChart height='350px' width='1200px' [datasets]="barChartData3" [labels]="barChartLabels3" [options]="barChartOptions3"
+                [legend]="barChartLegend" [chartType]="'bar'" [colors]="barChartColor" (chartHover)="chartHovered($event)"
+                class="canvas-none"></canvas>
+            </div>
+
+            <div class="no_data" *ngIf="noBarData3">
+              <p>No Data Found</p>
+            </div>
+          </div>
+          <div class={{barposition4}} id="down_load" *ngIf="barChart4">
+            <span class="export order arrow" (click)="sortOrderChange(-1)"><i class="fa fa-sort-down"></i>
+                <span class="tooltiptext">Asc</span>
+            </span>
+            <span class="export order uparrow" (click)="sortOrderChange(1)"><i class="fa fa-sort-up"></i>
+            <span class="tooltiptext">Desc</span>
+            </span>
+            <div class="down_icon" *ngIf="hidefilter">
+              <span class="export" *ngIf="barpdf4" (click)="pdfHtml(barposition4,barchead4)">
+                <img src="../assets/images/pdf.png" style="width:32px">
+                <span class="tooltiptext">Download as PDF</span>
+              </span>
+              <span class="export noright" *ngIf="barcsv4" (click)="download(barheading4,barChartData4,barChartLabels4)">
+                <img src="../assets/images/xl.png" style="width:32px">
+                <span class="tooltiptext">Download as CSV</span>
+              </span>
+              <span class="export noright" *ngIf="barmail4" (click)="showPass(barposition4,barheading4)">
+                <img src="../assets/images/envelope.png" style="width:32px;">
+                <span class="tooltiptext">Email Graph</span>
+              </span>
+            </div>
+            <div class="engaged" id={{barposition4}} *ngIf="yesBarData4">
+              <input type=text class="form-controls chart-head" [readonly]="read" name="desc" [(ngModel)]="barheading4">
+              <textarea class="form-controls" [readonly]="read" name="desc" [(ngModel)]="bardesc4"></textarea>
+              <canvas baseChart height='350px' width='1200px' [datasets]="barChartData4" [labels]="barChartLabels4" [options]="barChartOptions4"
+                [legend]="barChartLegend" [chartType]="'bar'" [colors]="barChartColor" (chartHover)="chartHovered($event)"
+                class="canvas-none"></canvas>
+            </div>
+
+            <div class="no_data" *ngIf="noBarData4">
+              <p>No Data Found</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+
+  <div class="footer">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align:right;">
+      <p> Powered By</p>
+      <img src="../../../assets/images/logo.png" style="width:50px;height:30px;display:inline-block;">
+      <p> Dynamic Dashboard</p>
+    </div>
+  </div>
+
+  <div class="default-popup-section" id="template" *ngIf="showHide">
+    <form method="post" #passwordForm="ngForm">
+      <div class="default-popup">
+        <div class="innerpadding">
+
+          <button type="button" class=" pull-right closebutton" aria-label="Close" (click)="closepopup()">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          <h4 class="tablehead">Email Template</h4>
+        </div>
+        <div class="contentpop">
+          <div class="form-group">
+            <label>Enter Email Id Here
+                <span style=color:red>*</span>
+              </label>
+            <input type="text" class="form-control" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" #emailid="ngModel" name="emailid"
+              [(ngModel)]="email">
+            <div [hidden]="emailid.valid || emailid.pristine" style="color:red">
+              <p [hidden]="!emailid.hasError('required')">emailid is required</p>
+              <div [hidden]="!emailid.hasError('pattern')">Email format should be
+                <small>
+                    <b>joe@abc.com</b>
+                  </small>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div class="popfooter">
+          <button type="submit" (click)="emailPdf(email)" [disabled]="!passwordForm.form.valid" class="btn btn-primary">Send Mail</button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <!-- customized template starts here style="display:none" -->
+  <div style="opacity: 0.0;top:0;position:fixed;color:black !important;font-family:Verdana, Geneva, Tahoma, sans-serif;font-weight:400;z-index:-1;">
+    
+ 
+      <div class="col-sm-12" id="7foo" *ngIf="templatePage" style="padding: 0;background:white">
+          <div class="desc_custom" style="background:white" >
+              <h1 style="margin-left: 3%;font-weight:600;">  {{template.customDashboardName}}   
+                      </h1>
+                      <span>
+              <h3 style="margin-left: 3%;
+              font-weight: 600;
+              display: inline;">Description:</h3> 
+              <p style="margin-top:2%;display:inline;font-weight:600;">
+              {{template.customTemplateDesc}}</p>
+                      </span>
+      
+           </div>
+       <div class={{template.templateType}} style="float:left;width:100%">
+
+          <div class={{stackedlineposition1}} id="down_load" *ngIf="stackedline1">
+
+
+            <div class="engaged" id={{7+stackedlineposition1}} *ngIf="yesStackLineData1">
+              <input type=text class="form-controls chart-head1" [readonly]="read" name="desc" [(ngModel)]="stackedlinechead1">
+              <p class="chart_descp">{{stackedlinecdesc1}}</p>
+              <canvas id="custom_chart" baseChart height='350px' width='1200px' class="canvas-none" [datasets]="stackLineData" [labels]="stackLineLabels"
+                [colors]="" [options]="stackLineOptions" [chartType]="stackLineType" (chartHover)="chartHovered($event)"></canvas>
+            </div>
+
+
+          </div>
+
+          <div class={{stackedlineposition2}} id="down_load" *ngIf="stackedline2">
+
+
+            <div class="engaged" id={{7+stackedlineposition2}} *ngIf="yesStackLineData2">
+
+              <input type=text class="form-controls chart-head1" [readonly]="read" name="desc" [(ngModel)]="stackedlinechead2">
+              <p class="chart_descp">{{stackedlinecdesc2}}</p>
+              <canvas id="custom_chart" baseChart height='350px' width='1200px' class="canvas-none" [datasets]="stackLineData2" [labels]="stackLineLabels2"
+                [colors]="" [options]="stackLineOptions2" [chartType]="stackLineType" (chartHover)="chartHovered($event)"></canvas>
+            </div>
+
+
+          </div>
+
+          <div class={{stackedlineposition3}} id="down_load" *ngIf="stackedline3">
+
+
+            <div class="engaged" id={{7+stackedlineposition3}} *ngIf="yesStackLineData3">
+
+              <input type=text class="form-controls chart-head1" [readonly]="read" name="desc" [(ngModel)]="stackedlinechead3">
+              <p class="chart_descp">{{stackedlinecdesc3}}</p>
+              <canvas id="custom_chart" baseChart height='350px' width='1200px' class="canvas-none" [datasets]="stackLineData3" [labels]="stackLineLabels3"
+                [colors]="" [options]="stackLineOptions3" [chartType]="stackLineType" (chartHover)="chartHovered($event)"></canvas>
+            </div>
+
+          </div>
+
+          <div class={{stackedlineposition4}} id="down_load" *ngIf="stackedline4">
+            <div class="engaged" id={{7+stackedlineposition4}} *ngIf="yesStackLineData4">
+              <input type=text class="form-controls chart-head1" [readonly]="read" name="desc" [(ngModel)]="stackedlinechead4">
+              <p class="chart_descp">{{stackedlinecdesc4}}</p>
+              <canvas id="custom_chart" baseChart height='350px' width='1200px' class="canvas-none" [datasets]="stackLineData4" [labels]="stackLineLabels4"
+                [colors]="" [options]="stackLineOptions4" [chartType]="stackLineType" (chartHover)="chartHovered($event)"></canvas>
+            </div>
+
+
+          </div>
+
+          <div class={{stackedbarposition1}} id="down_load" *ngIf="stackedBar1">
+            <span class="export order  arrow" (click)="sortOrderChange(-1)"><i class="fa fa-sort-down"></i>
+                            <span class="tooltiptext">Asc</span>
+            </span>
+            <span class="export order uparrow" (click)="sortOrderChange(1)"><i class="fa fa-sort-up"></i>
+                        <span class="tooltiptext">Desc</span>
+            </span>
+
+            <div class="engaged" id={{7+stackedbarposition1}} *ngIf="yesStackChartData1">
+
+              <input type=text class="form-controls chart-head1" [readonly]="read" name="desc" [(ngModel)]="stackbarchead1">
+              <p class="chart_descp">{{stackedbarcdesc1}}</p>
+              <canvas id="custom_chart" baseChart height='350px' width='1200px' class="canvas-none" [datasets]="stackChartData" [labels]="stackChartLabels"
+                [colors]="" [options]="stackChartOptions" [chartType]="stackChartType" (chartHover)="chartHovered($event)"></canvas>
+            </div>
+
+          </div>
+
+          <!-- second stack bar -->
+          <div class={{stackedbarposition2}} id="down_load" *ngIf="stackedBar2">
+
+            <div class="engaged" id={{7+stackedbarposition2}} *ngIf="yesStackChartData2">
+              <input type=text class="form-controls chart-head1" [readonly]="read" name="desc" [(ngModel)]="stackbarchead2">
+              <p class="chart_descp">{{stackedbarcdesc2}}</p>
+              <canvas id="custom_chart" baseChart height='350px' width='1200px' class="canvas-none" [datasets]="stackChartData2" [labels]="stackChartLabels2"
+                [colors]="" [options]="stackChartOptions2" [chartType]="stackChartType" (chartHover)="chartHovered($event)"></canvas>
+            </div>
+
+          </div>
+
+          <!-- Third Stacked Bar -->
+          <div class={{stackedbarposition3}} id="down_load" *ngIf="stackedBar3">
+
+
+            <div class="engaged" id={{7+stackedbarposition3}} *ngIf="yesStackChartData3">
+              <input type=text class="form-controls chart-head1" [readonly]="read" name="desc" [(ngModel)]="stackbarchead3">
+              <p class="chart_descp">{{stackedbarcdesc3}}</p>
+              <canvas id="custom_chart" baseChart height='350px' width='1200px' class="canvas-none" [datasets]="stackChartData3" [labels]="stackChartLabels3"
+                [colors]="" [options]="stackChartOptions3" [chartType]="stackChartType" (chartHover)="chartHovered($event)"></canvas>
+            </div>
+
+
+          </div>
+
+          <!-- Fourth Stacked Bar -->
+          <div class={{stackedbarposition4}} id="down_load" *ngIf="stackedBar4">
+
+
+            <div class="engaged" id={{7+stackedbarposition4}} *ngIf="yesStackChartData4">
+              <input type=text class="form-controls chart-head1" [readonly]="read" name="desc" [(ngModel)]="stackbarchead4">
+              <p class="chart_descp">{{stackedbarcdesc4}}</p>
+              <canvas id="custom_chart" baseChart height='350px' width='1200px' class="canvas-none" [datasets]="stackChartData4" [labels]="stackChartLabels4"
+                [colors]="" [options]="stackChartOptions4" [chartType]="stackChartType" (chartHover)="chartHovered($event)"></canvas>
+            </div>
+
+
+          </div>
+          <!-- First Linearea Load -->
+          <div class={{lineareaposition1}} id="down_load" *ngIf="lineAreaChart1">
+
+
+            <div class="engaged" id={{7+lineareaposition1}} *ngIf="yesLineAreaData1">
+              <input type=text class="form-controls chart-head1" [readonly]="read" name="desc" [(ngModel)]="lineareachead1">
+              <p class="chart_descp">{{linecdesc11}}</p>
+              <canvas id="custom_chart" baseChart height='350px' width='1200px' [datasets]="lineAreaChartData1" [labels]="lineAreaChartLabels1"
+                [options]="lineAreaChartOptions" [colors]="lineAreaChartColors" [legend]="lineAreaChartLegend" [chartType]="'line'"></canvas>
+            </div>
+
+
+          </div>
+
+          <div class={{lineareaposition2}} id="down_load" *ngIf="lineAreaChart2">
+
+
+            <div class="engaged" id={{7+lineareaposition2}} *ngIf="noLineAreaData2">
+              <input type=text class="form-controls chart-head1" [readonly]="read" name="desc" [(ngModel)]="lineareachead2">
+              <p class="chart_descp">{{linecdesc12}}</p>
+              <canvas id="custom_chart" baseChart height='350px' width='1200px' [datasets]="lineAreaChartData2" [labels]="lineAreaChartLabels2"
+                [options]="lineAreaChartOptions2" [colors]="lineAreaChartColors" [legend]="lineAreaChartLegend" [chartType]="'line'"
+                (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
+            </div>
+
+
+          </div>
+          <!-- second Linearea Load End-->
+          <!-- Third Linearea Load -->
+          <div class={{lineareaposition3}} id="down_load" *ngIf="lineAreaChart3">
+
+
+            <div class="engaged" id={{7+lineareaposition3}} *ngIf="noLineAreaData3">
+              <input type=text class="form-controls chart-head1" [readonly]="read" name="desc" [(ngModel)]="lineareachead3">
+              <p class="chart_descp">{{linecdesc13}}</p>
+              <canvas id="custom_chart" baseChart height='350px' width='1200px' [datasets]="lineAreaChartData3" [labels]="lineAreaChartLabels3"
+                [options]="lineAreaChartOptions3" [colors]="lineAreaChartColors" [legend]="lineAreaChartLegend" [chartType]="'line'"
+                (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
+            </div>
+
+
+          </div>
+          <!-- Third Linearea Load End-->
+          <!-- Four Linearea Load -->
+          <div class={{lineareaposition4}} id="down_load" *ngIf="lineAreaChart4">
+
+
+            <div class="engaged" id={{7+lineareaposition4}} *ngIf="noLineAreaData4">
+              <input type=text class="form-controls chart-head1" [readonly]="read" name="desc" [(ngModel)]="lineareachead4">
+              <p class="chart_descp">{{linecdesc14}}</p>
+              <canvas id="custom_chart" baseChart height='350px' width='1200px' [datasets]="lineAreaChartData4" [labels]="lineAreaChartLabels4"
+                [options]="lineAreaChartOptions4" [colors]="lineAreaChartColors" [legend]="lineAreaChartLegend" [chartType]="'line'"
+                (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
+            </div>
+
+
+          </div>
+          <!-- Four Linearea Load End-->
+
+          <!-- First Line Chart -->
+          <div class={{lineposition1}} id="down_load" *ngIf="lineChart1">
+
+
+            <div class="engaged" id={{7+lineposition1}} *ngIf="yesLineData1">
+              <input type=text class="form-controls chart-head1" [readonly]="read" name="desc" [(ngModel)]="linechead1">
+              <p class="chart_descp">{{linecdesc1}}</p>
+              <canvas id="custom_chart" baseChart height='350px' width='1200px' [datasets]="lineChartData1" [labels]="lineChartLabels1"
+                [options]="lineChartOptions" [colors]="lineChartColors" [legend]="lineChartLegend" [chartType]="'line'" (chartHover)="chartHovered($event)"></canvas>
+            </div>
+
+
+          </div>
+
+          <!-- First Line Chart End -->
+
+          <!-- Second Line Chart  -->
+          <div class={{lineposition2}} id="down_load" *ngIf="lineChart2">
+
+
+            <div class="engaged" id={{7+lineposition2}} *ngIf="yesLineData2">
+              <input type=text class="form-controls chart-head1" [readonly]="read" name="desc" [(ngModel)]="linechead2">
+              <p class="chart_descp">{{linecdesc2}}</p>
+              <canvas id="custom_chart" baseChart height='350px' width='1200px' [datasets]="lineChartData2" [labels]="lineChartLabels2"
+                [options]="lineChartOptions2" [colors]="lineChartColors" [legend]="lineChartLegend" [chartType]="'line'"
+                (chartHover)="chartHovered($event)"></canvas>
+            </div>
+
+
+          </div>
+          <!-- Second Line Chart End -->
+          <!-- Third Line Chart -->
+          <div class={{lineposition3}} id="down_load" *ngIf="lineChart3">
+
+            <div class="engaged" id={{7+lineposition3}} *ngIf="yesLineData3">
+              <input type=text class="form-controls chart-head1" [readonly]="read" name="desc" [(ngModel)]="linechead3">
+              <p class="chart_descp">{{linecdesc3}}</p>
+              <canvas id="custom_chart" baseChart height='350px' width='1200px' [datasets]="lineChartData3" [labels]="lineChartLabels3"
+                [options]="lineChartOptions3" [colors]="lineChartColors" [legend]="lineChartLegend" [chartType]="'line'"
+                (chartHover)="chartHovered($event)"></canvas>
+            </div>
+
+
+          </div>
+          <!-- Third Line Chart End -->
+          <!-- Fourth Line Chart  -->
+          <div class={{lineposition4}} id="down_load" *ngIf="lineChart4">
+
+            <div class="engaged" id={{7+lineposition4}} *ngIf="yesLineData4">
+              <input type=text class="form-controls chart-head1" [readonly]="read" name="desc" [(ngModel)]="linechead4">
+              <p class="chart_descp">{{linecdesc4}}</p>
+              <canvas id="custom_chart" baseChart height='350px' width='1200px' [datasets]="lineChartData4" [labels]="lineChartLabels4"
+                [options]="lineChartOptions4" [colors]="lineChartColors" [legend]="lineChartLegend" [chartType]="'line'"
+                (chartHover)="chartHovered($event)"></canvas>
+            </div>
+
+          </div>
+          <!-- Fourth Line Chart End -->
+
+          <!-- First Pie Chart  -->
+          <div class={{pieposition1}} id="down_load" *ngIf="pieChart1">
+
+            <div class="engaged" id={{7+pieposition1}} *ngIf="yesPieData1">
+              <input type=text class="form-controls chart-head1" [readonly]="read" name="desc" [(ngModel)]="piechartchead1">
+              <p class="chart_descp">{{piechartcdesc1}}</p>
+              <canvas id="custom_pie" baseChart height='350px' width='1200px' [datasets]="pieChartData1" [labels]="pieChartLabels1" [legend]="pieChartLegend"
+                [chartType]="'pie'" [colors]="pieChartColor" [options]="pieChartOptions" (chartHover)="pieChartHovered($event)"></canvas>
+            </div>
+
+
+          </div>
+          <!-- First Pie Chart End -->
+          <!-- Second Pie Chart -->
+          <div class={{pieposition2}} id="down_load" *ngIf="pieChart2">
+
+            <div class="engaged" id={{7+pieposition2}} *ngIf="yesPieData2">
+              <input type=text class="form-controls chart-head1" [readonly]="read" name="desc" [(ngModel)]="piechartchead2">
+              <p class="chart_descp">{{piechartcdesc2}}</p>
+              <canvas baseChart height='350px' width='1200px' [datasets]="pieChartData2" [labels]="pieChartLabels2" [legend]="pieChartLegend"
+                [chartType]="'pie'" [colors]="pieChartColor" [options]="pieChartOptions" (chartHover)="chartHovered($event)"></canvas>
+            </div>
+
+
+          </div>
+          <!-- Second Pie Chart End -->
+          <!-- Third Pie Chart -->
+          <div class={{pieposition3}} id="down_load" *ngIf="pieChart3">
+
+            <div class="engaged" id={{7+pieposition3}} *ngIf="yesPieData3">
+              <input type=text class="form-controls chart-head1" [readonly]="read" name="desc" [(ngModel)]="piechartchead3">
+              <p class="chart_descp">{{piechartcdesc3}}</p>
+              <canvas id="custom_pie" baseChart height='350px' width='1200px' [datasets]="pieChartData3" [labels]="pieChartLabels3" [legend]="pieChartLegend"
+                [chartType]="'pie'" [colors]="pieChartColor" [options]="pieChartOptions" (chartHover)="chartHovered($event)"></canvas>
+            </div>
+
+
+          </div>
+          <!-- Third Pie Chart End -->
+          <!-- Fourth Pie Chart -->
+          <div class={{pieposition4}} id="down_load" *ngIf="pieChart4">
+
+            <div class="engaged" id={{7+pieposition4}} *ngIf="yesPieData4">
+              <input type=text class="form-controls chart-head1" [readonly]="read" name="desc" [(ngModel)]="piechartchead4">
+              <p class="chart_descp">{{piechartcdesc4}}</p>
+              <canvas id="custom_pie" baseChart height='350px' width='1200px' [datasets]="pieChartData4" [labels]="pieChartLabels4" [legend]="pieChartLegend"
+                [chartType]="'pie'" [colors]="pieChartColor" [options]="pieChartOptions" (chartHover)="chartHovered($event)"></canvas>
+            </div>
+
+          </div>
+          <!-- Fourth Pie Chart End -->
+
+          <div class={{barposition1}} id="down_load" *ngIf="barChart1">
+
+
+            <div class="engaged" id={{7+barposition1}} *ngIf="yesBarData1">
+              <input type=text class="form-controls chart-head1" [readonly]="read" name="desc" [(ngModel)]="barchead1">
+              <p class="chart_descp">{{barcdesc1}}</p>
+              <canvas id="custom_chart" baseChart height='350px' width='1200px' [datasets]="barChartData1" [labels]="barChartLabels1" [options]="barChartOptions"
+                [legend]="barChartLegend" [chartType]="'bar'" [colors]="barChartColor" (chartHover)="chartHovered($event)"
+                class="canvas-none"></canvas>
+            </div>
+
+
+          </div>
+
+          <div class={{barposition2}} id="down_load" *ngIf="barChart2">
+
+
+            <div class="engaged" id={{7+barposition2}} *ngIf="yesBarData2">
+              <input type=text class="form-controls chart-head1" [readonly]="read" name="desc" [(ngModel)]="barchead2">
+              <p class="chart_descp">{{barcdesc2}}</p>
+              <canvas id="custom_chart" baseChart height='350px' width='1200px' [datasets]="barChartData2" [labels]="barChartLabels2" [options]="barChartOptions2"
+                [legend]="barChartLegend" [chartType]="'bar'" [colors]="barChartColor" (chartHover)="chartHovered($event)"
+                class="canvas-none"></canvas>
+            </div>
+
+          </div>
+
+
+          <div class={{barposition3}} id="down_load" *ngIf="barChart3">
+
+
+            <div class="engaged" id={{7+barposition3}} *ngIf="yesBarData3">
+              <input type=text class="form-controls chart-head1" [readonly]="read" name="desc" [(ngModel)]="barchead3">
+              <p class="chart_descp">{{barcdesc3}}</p>
+              <canvas id="custom_chart" baseChart height='350px' width='1200px' [datasets]="barChartData3" [labels]="barChartLabels3" [options]="barChartOptions3"
+                [legend]="barChartLegend" [chartType]="'bar'" [colors]="barChartColor" (chartHover)="chartHovered($event)"
+                class="canvas-none"></canvas>
+            </div>
+
+
+          </div>
+          <div class={{barposition4}} id="down_load" *ngIf="barChart4">
+
+
+            <div class="engaged" id={{7+barposition4}} *ngIf="yesBarData4">
+              <input type=text class="form-controls chart-head1" [readonly]="read" name="desc" [(ngModel)]="barchead4">
+              <p class="chart_descp">{{barcdesc4}}</p>
+              <canvas id="custom_chart" baseChart height='350px' width='1200px' [datasets]="barChartData4" [labels]="barChartLabels4" [options]="barChartOptions4"
+                [legend]="barChartLegend" [chartType]="'bar'" [colors]="barChartColor" (chartHover)="chartHovered($event)"
+                class="canvas-none"></canvas>
+            </div>
+
+
+          </div>
+        </div>
+      </div>
+
+</div>

@@ -1,0 +1,42 @@
+/* You can add global styles to this file, and also import other style files */
+@import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
+
+.cursor{
+    cursor: pointer;
+}
+
+.selected-list{
+         box-shadow: none;
+        padding: 6px;
+}
+
+mat-form-field-underline{
+
+    height: 0px;
+
+}
+.head_title{margin-top:84px;}
+
+angular2-multiselect .selected-list .countplaceholder{
+    background-color: #673AB7 !important;
+    top: 35% !important;
+    color: #fff !important;
+    right: 22px !important;
+    width: 18px;
+    font-weight: 600;
+    }
+
+    h4.axis.export{
+        font-weight: 600;
+    }
+
+    .mat-select-panel .mat-optgroup-label, .mat-select-panel .mat-option {
+
+        height: 2em !important;
+    }
+
+    div#example_length {
+        position: absolute;
+        bottom: 0px;
+        left: 10px;
+    }
