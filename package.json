@@ -35,7 +35,7 @@
     "ngx-order-pipe": "^2.0.2",
     "ngx-pagination": "^3.1.0",
     "ngx-spinner": "^1.2.0",
-    "node-sass": "^4.11.0",
+    "node-sass": "^4.13.1",
     "pdfshift": "^1.0.4",
     "rxjs": "^5.5.2",
     "zone.js": "^0.8.14"
